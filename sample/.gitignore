@@ -1,0 +1,5 @@
+/build
+/.gradle
+/iosApp/iosApp.xcodeproj/project.xcworkspace
+/iosApp/iosApp.xcodeproj/xcuserdata
+/iosApp/.DS_Store
