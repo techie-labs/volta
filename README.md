@@ -7,7 +7,7 @@
   <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square" alt="License"></a>
   <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-2.0.0-7F52FF.svg?style=flat-square&logo=kotlin" alt="Kotlin"></a>
   <a href="https://www.jetbrains.com/lp/compose-multiplatform/"><img src="https://img.shields.io/badge/Compose%20Multiplatform-1.6.10-4285F4.svg?style=flat-square&logo=jetpackcompose" alt="Compose Multiplatform"></a>
-  <a href="https://central.sonatype.com/artifact/io.techie.volta/library"><img src="https://img.shields.io/maven-central/v/io.techie.volta/library?style=flat-square" alt="Maven Central"></a>
+  <a href="https://central.sonatype.com/artifact/io.techie.volta/volta"><img src="https://img.shields.io/maven-central/v/io.techie.volta/volta?style=flat-square" alt="Maven Central"></a>
 </p>
 
 # Volta ⚡
@@ -32,7 +32,7 @@ Add the dependency to your `commonMain` source set in `build.gradle.kts`:
 
 ```kotlin
 commonMain.dependencies {
-    implementation("io.techie.volta:library:1.0.0")
+    implementation("io.techie.volta:volta:1.0.0")
 }
 ```
 

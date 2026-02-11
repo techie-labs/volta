@@ -75,7 +75,7 @@ mavenPublishing {
     
     coordinates(
         groupId = "io.techie.volta",
-        artifactId = "library",
+        artifactId = "volta",
         version = "1.0.0"
     )
 
