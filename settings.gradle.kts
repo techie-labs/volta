@@ -34,4 +34,6 @@ plugins {
 }
 
 include(":library")
-include(":sample")
+include(":sample:shared")
+include(":sample:androidApp")
+include(":sample:desktopApp")

@@ -19,8 +19,11 @@ plugins {
 
 // Configuration for Binary Compatibility Validator
 apiValidation {
-    // Ignore the sample project as it is not part of the public API
+    // Ignore the sample projects as they are not part of the public API
     ignoredProjects.add("sample")
+    ignoredProjects.add("shared")
+    ignoredProjects.add("androidApp")
+    ignoredProjects.add("desktopApp")
 }
 
 // Configuration applied to all subprojects (library and sample)
