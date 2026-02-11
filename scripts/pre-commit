@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# Pre-commit hook to run Spotless and Detekt before committing.
+#
+
+echo "🦎 Running pre-commit checks..."
+
+# 1. Run Spotless Check (Formatting)
+echo "Running Spotless check..."
+./gradlew spotlessCheck --daemon
+status=$?
+
+if [ $status -ne 0 ]; then
+    echo "❌ Spotless check failed. Please run './gradlew spotlessApply' to format your code."
+    exit 1
+fi
+
+# 2. Run Detekt (Static Analysis)
+echo "Running Detekt..."
+./gradlew detekt --daemon
+status=$?
+
+if [ $status -ne 0 ]; then
+    echo "❌ Detekt check failed. Please fix the reported issues."
+    exit 1
+fi
+
+echo "✅ All checks passed!"
+exit 0

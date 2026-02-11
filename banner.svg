@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400">
+  <defs>
+    <linearGradient id="bgSpace" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F2027;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#203A43;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2C5364;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="neonText" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00F260;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0575E6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="400" rx="15" fill="url(#bgSpace)" />
+
+  <!-- Background Illustrations (Subtle Tech Patterns) -->
+  <g opacity="0.1" fill="none" stroke="#FFFFFF" stroke-width="2">
+    <path d="M50,50 L100,100 M100,50 L50,100" transform="translate(20,20)" />
+    <circle cx="1100" cy="50" r="30" />
+    <rect x="600" y="300" width="50" height="50" transform="rotate(45 625 325)" />
+    <path d="M100,300 Q200,400 300,300 T500,300" />
+    <path d="M800,50 L850,100 L900,50" />
+  </g>
+
+  <!-- Floating Platforms (Isometric-ish) -->
+
+  <!-- Android Robot Head (Stylized) -->
+  <g transform="translate(800, 80) rotate(10)">
+    <path d="M0,20 A20,20 0 0,1 40,20 L40,40 L0,40 Z" fill="#3DDC84" opacity="0.8"/>
+    <circle cx="12" cy="15" r="2" fill="white"/>
+    <circle cx="28" cy="15" r="2" fill="white"/>
+    <rect x="-5" y="10" width="4" height="15" rx="2" fill="#3DDC84" transform="rotate(-30 0 20)"/>
+    <rect x="41" y="10" width="4" height="15" rx="2" fill="#3DDC84" transform="rotate(30 40 20)"/>
+  </g>
+
+  <!-- Apple/iOS (Stylized) -->
+  <g transform="translate(950, 120) rotate(-15)">
+     <circle cx="25" cy="25" r="20" fill="#AAAAAA" opacity="0.8"/>
+     <path d="M25,5 Q35,5 35,15" fill="none" stroke="white" stroke-width="2"/>
+  </g>
+
+  <!-- Desktop/Monitor -->
+  <g transform="translate(850, 280) rotate(5)">
+    <rect x="0" y="0" width="60" height="40" rx="5" fill="#4285F4" opacity="0.8"/>
+    <rect x="5" y="5" width="50" height="30" fill="#1A1A2E"/>
+    <rect x="20" y="40" width="20" height="10" fill="#4285F4"/>
+    <rect x="10" y="50" width="40" height="5" rx="2" fill="#4285F4"/>
+  </g>
+
+  <!-- Web/Globe -->
+  <g transform="translate(1050, 220) rotate(-10)">
+    <circle cx="30" cy="30" r="25" fill="none" stroke="#F0DB4F" stroke-width="3" opacity="0.8"/>
+    <ellipse cx="30" cy="30" rx="25" ry="10" fill="none" stroke="#F0DB4F" stroke-width="2" opacity="0.6"/>
+    <ellipse cx="30" cy="30" rx="10" ry="25" fill="none" stroke="#F0DB4F" stroke-width="2" opacity="0.6"/>
+  </g>
+
+  <!-- Main Content Area -->
+  <g transform="translate(100, 100)">
+    <!-- Logo Integration -->
+    <g transform="translate(0, -20) scale(0.5)">
+        <path d="M 180 350 C 120 350, 80 300, 80 240 C 80 180, 130 130, 190 130 L 250 130" fill="none" stroke="url(#neonText)" stroke-width="40" stroke-linecap="round" />
+        <path d="M 190 130 L 350 130 C 400 130, 440 170, 440 220 C 440 270, 400 310, 350 310 L 250 310" fill="url(#neonText)" opacity="0.9" />
+        <path d="M 350 130 L 480 130 L 420 240 Z" fill="#00F260" opacity="0.8" />
+        <circle cx="400" cy="180" r="35" fill="#FFFFFF" />
+        <circle cx="400" cy="180" r="15" fill="#1A1A2E" />
+    </g>
+
+    <!-- Typography -->
+    <text x="250" y="100" font-family="sans-serif" font-size="90" font-weight="900" fill="url(#neonText)" letter-spacing="4" filter="url(#glow)">KAMELEOON</text>
+    <text x="260" y="150" font-family="monospace" font-size="28" fill="#FFFFFF" opacity="0.8">Compose Multiplatform Library Template</text>
+
+    <!-- Code Snippet Decoration -->
+    <g transform="translate(260, 190)">
+        <rect x="0" y="0" width="375" height="40" rx="5" fill="#000000" opacity="0.3"/>
+        <text x="15" y="25" font-family="monospace" font-size="16" fill="#00F260">fun</text>
+        <text x="55" y="25" font-family="monospace" font-size="16" fill="#4285F4">adaptUI</text>
+        <text x="120" y="25" font-family="monospace" font-size="16" fill="#FFFFFF">() = </text>
+        <text x="170" y="25" font-family="monospace" font-size="16" fill="#F0DB4F">Compose.everywhere()</text>
+    </g>
+  </g>
+
+  <!-- Glow Filter Definition (Repeated for standalone viewing) -->
+  <defs>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
