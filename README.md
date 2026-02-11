@@ -97,16 +97,17 @@ class BatteryViewModel(private val batteryProvider: BatteryStateProvider) {
 ## 📊 Feature Matrix
 
 | Feature | Android 🤖 | iOS 🍎 | Windows 🪟 | macOS 🍏 |
-| :--- | :---: | :---: | :---: | :---: |
-| **Level & Status** | ✅ | ✅ | ✅ | ✅ |
-| **Power Saving** | ✅ | ✅ | ❌ | ❌ |
-| **Voltage** | ✅ | ❌ | ❌ | ❌ |
-| **Temperature** | ✅ | ❌ | ❌ | ❌ |
-| **Technology** | ✅ | ❌ | ❌ | ❌ |
-| **Cycle Count** | ✅ (14+) | ❌ | ✅ | ✅ |
-| **Current (mA)** | ✅ | ❌ | ❌ | ❌ |
-| **Safe Mode** | ✅ | ❌ | ❌ | ❌ |
-| **Remaining Time** | ❌ | ❌ | ❌ | ❌ |
+| :--- | :---: | :---: | :---: |:--------:|
+| **Level & Status** | ✅ | ✅ | ✅ |    ✅     |
+| **Power Saving** | ✅ | ✅ | ❌ |    ❌     |
+| **Voltage** | ✅ | ❌ | ❌ |    ✅     |
+| **Temperature** | ✅ | ❌ | ❌ |    ✅     |
+| **Technology** | ✅ | ❌ | ❌ |    ✅     |
+| **Cycles** | ✅ (14+) | ❌ | ✅ |    ✅     |
+| **Current (Now)** | ✅ | ❌ | ❌ |    ✅     |
+| **Safe Mode** | ✅ | ❌ | ❌ |    ❌     |
+| **Time Remaining** | ❌ | ❌ | ❌ |    ❌     |
+| **Capacity** | ✅ | ❌ | ❌ |     ✅     |
 
 ## 🤝 Contributing
 

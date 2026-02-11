@@ -51,18 +51,24 @@ class DesktopBatteryStateProvider(
 
         emitChargingEventIfChanged(chargingStatus)
 
+        val chargingSource = when (info.chargingSource) {
+            "AC" -> ChargingSource.AC
+            "Battery" -> ChargingSource.UNKNOWN
+            else -> ChargingSource.UNKNOWN
+        }
+
         _battery.value = BatteryState(
             level = info.level,
             isCharging = info.isCharging,
             isLow = info.level?.let { it <= 15 },
             chargingStatus = chargingStatus,
-            chargingSource = if (info.isPlugged == true) ChargingSource.AC else ChargingSource.UNKNOWN,
+            chargingSource = chargingSource,
             voltageMv = info.voltageMv?.let { Availability.Available(it) } ?: Availability.Unknown,
-            temperatureC = Availability.NotSupported, // Not typically available via standard CLI
+            temperatureC = info.temperatureC?.let { Availability.Available(it) } ?: Availability.Unknown,
             health = Availability.NotSupported,
             technology = info.technology,
             cycleCount = info.cycleCount?.let { Availability.Available(it) } ?: Availability.Unknown,
-            currentNowMa = Availability.NotSupported, // Difficult to get consistently across OSs without root/admin
+            currentNowMa = info.currentNowMa?.let { Availability.Available(it) } ?: Availability.Unknown,
             currentAverageMa = Availability.NotSupported,
             chargeCounterUah = info.chargeCounterUah?.let { Availability.Available(it) } ?: Availability.Unknown,
             remainingEnergyTimeMillis = info.remainingTimeMillis?.let { Availability.Available(it) } ?: Availability.Unknown,
