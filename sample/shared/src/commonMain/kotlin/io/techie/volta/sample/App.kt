@@ -254,7 +254,7 @@ fun DetailsGrid(state: BatteryState) {
                 modifier = Modifier.weight(1f),
                 icon = Icons.Rounded.ElectricalServices,
                 label = "Voltage",
-                value = state.voltageMv.toStringValue { "${it} mV" }
+                value = state.voltageMv.toStringValue { "$it mV" }
             )
         }
 
@@ -263,7 +263,7 @@ fun DetailsGrid(state: BatteryState) {
                 modifier = Modifier.weight(1f),
                 icon = Icons.Rounded.Speed,
                 label = "Current (Now)",
-                value = state.currentNowMa.toStringValue { "${it} mA" }
+                value = state.currentNowMa.toStringValue { "$it mA" }
             )
              DetailCard(
                 modifier = Modifier.weight(1f),
@@ -297,7 +297,7 @@ fun AdditionalInfoSection(state: BatteryState) {
             
             InfoRow(label = "Health Status", value = state.health.toStringValue { it.name })
             InfoRow(label = "Charging Source", value = state.chargingSource.name)
-            InfoRow(label = "Current (Avg)", value = state.currentAverageMa.toStringValue { "${it} mA" })
+            InfoRow(label = "Current (Avg)", value = state.currentAverageMa.toStringValue { "$it mA" })
             InfoRow(label = "Time Remaining", value = state.remainingEnergyTimeMillis.toStringValue { 
                 val mins = (it / 1000) / 60
                 val hours = mins / 60

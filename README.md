@@ -10,25 +10,24 @@
   <a href="https://central.sonatype.com/artifact/io.techie.volta/volta"><img src="https://img.shields.io/maven-central/v/io.techie.volta/volta?style=flat-square" alt="Maven Central"></a>
 </p>
 
-# Volta ⚡
+# Volta ⚡ — Kotlin Multiplatform Battery Library
 
-**Volta** is the ultimate battery intelligence library for **Kotlin Multiplatform** and **Compose Multiplatform**.
+**Volta** is a powerful, reactive battery intelligence library for **Kotlin Multiplatform (KMP)** and **Compose Multiplatform**. 
 
-Designed for modern apps that live everywhere, Volta provides a unified, reactive API to access deep battery diagnostics across **Android**, **iOS**, **Desktop** (Windows, macOS, Linux), and **Web** (Wasm - *Coming Soon*).
+Monitor battery health, charging status, and advanced diagnostics across **Android**, **iOS**, and **Desktop** (Windows, macOS, Linux) with a single, unified API. Stop writing platform-specific code for battery monitoring and start using Volta.
 
-Stop writing platform-specific battery code. Let Volta handle the complexity.
+## ✨ Key Features
 
-## ✨ Why Volta?
-
-*   **Write Once, Monitor Everywhere**: Unified API for all platforms.
-*   **Reactive by Design**: Built on `StateFlow`, perfect for modern UI architectures.
-*   **Deep Diagnostics**: Go beyond just battery level. Access **Cycle Count**, **Current (mA)**, **Voltage**, **Temperature**, and **Technology**.
-*   **Smart Detection**: Automatically detects **Power Saving Mode**, **Safe Mode**, and **Protected Battery** states.
-*   **Compose First**: Includes `rememberBatteryState()` for instant UI integration.
+*   **Unified KMP API**: One interface for Android, iOS, and Desktop battery monitoring.
+*   **Reactive State Management**: Built on Kotlin `StateFlow` for seamless integration with modern UI architectures.
+*   **Deep Battery Diagnostics**: Access advanced data like **Cycle Count**, **Current (mA)**, **Voltage**, **Temperature**, and **Battery Technology**.
+*   **Smart Status Detection**: Automatically detect **Power Saving Mode**, **Safe Mode**, and **Protected Battery** (80% limit) states.
+*   **Compose Multiplatform Ready**: Includes the `rememberBatteryState()` hook for instant UI updates.
+*   **Lightweight & Native**: Uses native system APIs (Android BatteryManager, iOS UIDevice, Windows WMIC, macOS pmset) for maximum efficiency.
 
 ## 📦 Installation
 
-Add the dependency to your `commonMain` source set in `build.gradle.kts`:
+Add Volta to your `commonMain` dependencies in your `build.gradle.kts` file:
 
 ```kotlin
 commonMain.dependencies {
@@ -38,9 +37,9 @@ commonMain.dependencies {
 
 ## 🚀 Quick Start
 
-### 1. Compose Multiplatform (The Easy Way)
+### 1. Using with Compose Multiplatform
 
-Just use the `rememberBatteryState()` composable to get a reactive state object.
+Get reactive battery updates in your UI with just one line of code:
 
 ```kotlin
 import androidx.compose.runtime.getValue
@@ -51,102 +50,73 @@ fun BatteryDashboard() {
     val battery by rememberBatteryState()
 
     Column {
-        // Basic Info
-        Text("Level: ${battery.level}%")
-        Text("Status: ${battery.chargingStatus}") // Charging, Discharging, Full
+        Text("Battery Level: ${battery.level}%")
+        Text("Charging Status: ${battery.chargingStatus}")
 
-        // Smart Alerts
         if (battery.isPowerSavingMode) {
-            Text("⚠️ Low Power Mode Active")
-        }
-        if (battery.isProtected) {
-            Text("🛡️ Battery Protection Active (80% Limit)")
-        }
-
-        // Advanced Diagnostics (Check availability first!)
-        battery.cycleCount.value?.let { cycles ->
-            Text("Cycle Count: $cycles")
-        }
-        battery.currentNowMa.value?.let { current ->
-            Text("Current Flow: ${current}mA")
+            Text("⚠️ Low Power Mode is ON")
         }
     }
 }
 ```
 
-### 2. Kotlin Multiplatform (Business Logic)
+### 2. Using in Kotlin Multiplatform (ViewModel/Logic)
 
-Inject `BatteryStateProvider` into your ViewModels or UseCases.
+Observe battery changes in your business logic:
 
 ```kotlin
-class DeviceMonitor(private val batteryProvider: BatteryStateProvider) {
-    
-    fun startMonitoring() {
-        batteryProvider.observe() // Start listening to system broadcasts
+class BatteryViewModel(private val batteryProvider: BatteryStateProvider) {
+    init {
+        batteryProvider.observe()
         
-        scope.launch {
+        viewModelScope.launch {
             batteryProvider.battery.collect { state ->
-                if (state.level != null && state.level!! < 20) {
-                    println("Low Battery Warning!")
-                }
+                println("Current Level: ${state.level}%")
             }
         }
     }
-    
-    fun stop() {
-        batteryProvider.stop() // Clean up resources
-    }
 }
 ```
 
-## 📱 Platform Requirements & Permissions
+## 📱 Platform Support & Permissions
 
 ### 🤖 Android
-Add these permissions to your `AndroidManifest.xml` to unlock full capabilities:
-
-```xml
-<!-- Required: Basic stats (Level, Status, Plugged) -->
-<uses-permission android:name="android.permission.BATTERY_STATS" />
-
-<!-- Optional: Enhanced Power Saver detection -->
-<uses-permission android:name="android.permission.POWER_SAVER" />
-```
 *   **Min SDK**: 24 (Android 7.0)
-*   **Cycle Count**: Requires Android 14 (API 34)+.
+*   **Permissions**: Add `<uses-permission android:name="android.permission.BATTERY_STATS" />` for full diagnostics.
+*   **Note**: Cycle Count requires Android 14+.
 
 ### 🍎 iOS
-No permissions required!
-*   **Privacy Note**: iOS restricts access to advanced hardware stats. Fields like *Cycle Count*, *Current*, and *Temperature* will return `Availability.NotSupported`.
+*   **Permissions**: None required.
+*   **Note**: iOS limits access to hardware-level stats like temperature and voltage for third-party apps.
 
 ### 🖥️ Desktop (JVM)
-Volta uses native system tools under the hood:
-*   **Windows**: Uses `wmic` and `powercfg`. No admin rights needed usually.
+*   **Windows**: Uses `wmic` and `powercfg`.
 *   **macOS**: Uses `pmset` and `system_profiler`.
 *   **Linux**: Reads from `/sys/class/power_supply/`.
 
 ## 📊 Feature Matrix
 
-| Feature | Android 🤖 | iOS 🍎 | Windows 🪟 | macOS 🍏 | Linux 🐧 |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Level & Status** | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Power Saving** | ✅ | ✅ | ✅ | ✅ | ❌ |
-| **Voltage** | ✅ | ❌ | ✅ | ❌ | ✅ |
-| **Temperature** | ✅ | ❌ | ❌ | ❌ | ❌ |
-| **Technology** | ✅ | ❌ | ✅ | ❌ | ✅ |
-| **Cycle Count** | ✅ (14+) | ❌ | ❌ | ✅ | ✅ |
-| **Current (mA)** | ✅ | ❌ | ❌ | ❌ | ❌ |
-| **Safe Mode** | ✅ | ❌ | ✅ | ✅ | ✅ |
+| Feature | Android 🤖 | iOS 🍎 | Windows 🪟 | macOS 🍏 |
+| :--- | :---: | :---: | :---: | :---: |
+| **Level & Status** | ✅ | ✅ | ✅ | ✅ |
+| **Power Saving** | ✅ | ✅ | ❌ | ❌ |
+| **Voltage** | ✅ | ❌ | ❌ | ❌ |
+| **Temperature** | ✅ | ❌ | ❌ | ❌ |
+| **Technology** | ✅ | ❌ | ❌ | ❌ |
+| **Cycle Count** | ✅ (14+) | ❌ | ✅ | ✅ |
+| **Current (mA)** | ✅ | ❌ | ❌ | ❌ |
+| **Safe Mode** | ✅ | ❌ | ❌ | ❌ |
+| **Remaining Time** | ❌ | ❌ | ❌ | ❌ |
 
 ## 🤝 Contributing
 
-We love contributions! Whether it's a bug fix, new feature, or just better documentation.
-Check out [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
+Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
 
 ## 📄 License
 
-Volta is proudly open-source under the [Apache 2.0 License](LICENSE).
+Volta is open-source software licensed under the [Apache 2.0 License](LICENSE).
 
 ---
 <p align="center">
-  Built with ⚡ by Techie Labs
+  Built with ⚡ by <a href="https://github.com/techie-labs">Techie Labs</a>
 </p>
