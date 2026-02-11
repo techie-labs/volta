@@ -1,0 +1,44 @@
+# Gradle
+.gradle
+**/build/
+!src/**/build/
+
+# Local configuration file (sdk.dir, etc.)
+local.properties
+
+# IntelliJ IDEA / Android Studio
+.idea
+*.iml
+*.iws
+*.ipr
+out/
+
+# macOS
+.DS_Store
+
+# Xcode
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
+xcuserdata
+DerivedData/
+
+# Node.js (if used)
+node_modules/
+
+# Kotlin Multiplatform
+.kotlin
+.cxx
+.externalNativeBuild
+
+# Captures
+captures/
+
+# Log files
+*.log
+
+# Secret files (just in case)
+secrets.properties

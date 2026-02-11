@@ -1,0 +1,47 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="grad_bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0F172A"/>
+<stop offset="1" stop-color="#1E293B"/>
+</linearGradient>
+<linearGradient id="grad_bolt" x1="256" y1="100" x2="256" y2="400" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FACC15"/>
+<stop offset="1" stop-color="#EAB308"/>
+</linearGradient>
+<filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+<feGaussianBlur stdDeviation="10" result="blur"/>
+<feComposite in="SourceGraphic" in2="blur" operator="over"/>
+</filter>
+</defs>
+
+<!-- Background Container -->
+<rect width="512" height="512" rx="128" fill="url(#grad_bg)"/>
+
+<!-- Circuit Pattern (Subtle) -->
+<path d="M128 128 L160 128 L160 96" stroke="#334155" stroke-width="8" stroke-linecap="round"/>
+<path d="M384 384 L352 384 L352 416" stroke="#334155" stroke-width="8" stroke-linecap="round"/>
+<path d="M96 352 L128 352 L128 384" stroke="#334155" stroke-width="8" stroke-linecap="round"/>
+<path d="M416 160 L384 160 L384 128" stroke="#334155" stroke-width="8" stroke-linecap="round"/>
+
+<!-- Central Battery Shape -->
+<rect x="176" y="80" width="160" height="352" rx="24" stroke="white" stroke-width="12" stroke-opacity="0.2"/>
+<rect x="216" y="56" width="80" height="24" rx="8" fill="white" fill-opacity="0.2"/>
+
+<!-- The Volta Bolt (Vectorized version of ic-voltage.png concept) -->
+<!-- Centered inside the battery shape -->
+<g transform="translate(130, 136) scale(2)">
+    <path d="M70 30 L40 75 H65 L35 110 L85 65 H60 L90 30 Z"
+          fill="url(#grad_bolt)"
+          stroke="#FACC15"
+          stroke-width="2"
+          stroke-linejoin="round"
+          filter="url(#glow)"/>
+</g>
+
+<!-- Platform Dots (Orbiting) -->
+<circle cx="128" cy="256" r="12" fill="#7F52FF" fill-opacity="0.8"/> <!-- Kotlin/Desktop -->
+<circle cx="384" cy="256" r="12" fill="#3DDC84" fill-opacity="0.8"/> <!-- Android -->
+<circle cx="256" cy="460" r="12" fill="#000000" stroke="#A2AAAD" stroke-width="4"/> <!-- iOS -->
+<circle cx="256" cy="52" r="12" fill="#4285F4" fill-opacity="0.8"/> <!-- Web -->
+
+</svg>
