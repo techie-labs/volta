@@ -13,31 +13,24 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
-// --- DEBUG & SETUP SECRETS ---
-println("--- CONFIGURING SECRETS ---")
-val secretMappings =
-    mapOf(
-        "MAVEN_CENTRAL_USERNAME" to "mavenCentralUsername",
-        "MAVEN_CENTRAL_PASSWORD" to "mavenCentralPassword",
-        "SIGNING_KEY" to "signingInMemoryKey",
-        "SIGNING_KEY_ID" to "signingInMemoryKeyId",
-        "SIGNING_PASSWORD" to "signingInMemoryKeyPassword",
-    )
-
-secretMappings.forEach { (envKey, propKey) ->
-    val envValue = System.getenv(envKey)
-    if (!envValue.isNullOrEmpty()) {
-        println("✅ Found ENV variable: $envKey -> Setting Gradle Property: $propKey")
-        // Set on current project
-        extra.set(propKey, envValue)
-        // Set on root project just in case
-        rootProject.extensions.extraProperties.set(propKey, envValue)
+// --- DEBUG: CHECK SECRETS PRESENCE ---
+println("--- CHECKING GRADLE PROPERTIES (Secrets) ---")
+listOf(
+    "mavenCentralUsername",
+    "mavenCentralPassword",
+    "signingInMemoryKey",
+    "signingInMemoryKeyId",
+    "signingInMemoryKeyPassword",
+).forEach { key ->
+    if (project.hasProperty(key)) {
+        // Do NOT print the value, just presence
+        println("✅ Property '$key' is present.")
     } else {
-        println("❌ MISSING ENV variable: $envKey")
+        println("❌ Property '$key' is MISSING.")
     }
 }
-println("---------------------------")
-// -----------------------------
+println("----------------------------------------")
+// -------------------------------------
 
 version = project.property("VERSION_NAME") as String
 group = "io.techie.volta"
