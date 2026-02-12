@@ -45,9 +45,11 @@ jobs:
       uses: gradle/actions/setup-gradle@v4
     - name: Build & Test (Android, JVM, Wasm)
       # Exclude iOS tasks to save time and memory on Linux runner
+      # Added :library:testDebugUnitTest to ensure Android unit tests (including commonTest) are run
       run: |
         ./gradlew \
           :library:assembleDebug \
+          :library:testDebugUnitTest \
           :library:jvmTest \
           :library:wasmJsTest \
           :sample:androidApp:assembleDebug \

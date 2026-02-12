@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/techie-labs/Volta/actions"><img src="https://img.shields.io/github/actions/workflow/status/techie-labs/Volta/build.yml?branch=main&logo=github&style=flat-square" alt="Build Status"></a>
+  <a href="https://github.com/techie-labs/Volta/actions/workflows/build.yml"><img src="https://github.com/techie-labs/Volta/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
   <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square" alt="License"></a>
   <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-2.0.0-7F52FF.svg?style=flat-square&logo=kotlin" alt="Kotlin"></a>
   <a href="https://www.jetbrains.com/lp/compose-multiplatform/"><img src="https://img.shields.io/badge/Compose%20Multiplatform-1.6.10-4285F4.svg?style=flat-square&logo=jetpackcompose" alt="Compose Multiplatform"></a>
@@ -108,6 +108,14 @@ class BatteryViewModel(private val batteryProvider: BatteryStateProvider) {
 | **Safe Mode** | ✅ | ❌ | ❌ |    ❌     |
 | **Time Remaining** | ❌ | ❌ | ❌ |    ❌     |
 | **Capacity** | ✅ | ❌ | ❌ |     ✅     |
+
+## 🧪 Testing
+
+Volta includes comprehensive unit tests for its core logic. The CI pipeline runs these tests on every push to ensure stability.
+
+```bash
+./gradlew allTests
+```
 
 ## 🤝 Contributing
 
