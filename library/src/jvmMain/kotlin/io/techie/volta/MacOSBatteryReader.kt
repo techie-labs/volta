@@ -1,3 +1,18 @@
+/*
+ * Copyright 2026 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.techie.volta
 
 /**
@@ -33,14 +48,14 @@ internal class MacOSBatteryReader : PlatformBatteryReader {
         runCatching {
             val output = ShellUtils.execute("pmset -g batt")
             level = Regex("(\\d+)%").find(output)?.groupValues?.get(1)?.toInt()
-            
+
             // Determine charging status
             // "charging;" -> Charging
             // "discharging;" -> Discharging
             // "AC attached" -> Plugged in
             val isDischarging = output.contains("discharging;", ignoreCase = true)
             val isChargingStr = output.contains("charging;", ignoreCase = true)
-            
+
             isCharging = isChargingStr && !isDischarging
             isPlugged = output.contains("AC Power", ignoreCase = true) || output.contains("AC attached", ignoreCase = true)
 
@@ -63,10 +78,10 @@ internal class MacOSBatteryReader : PlatformBatteryReader {
         // Queries the AppleSmartBattery registry entry for detailed hardware stats.
         runCatching {
             val output = ShellUtils.execute("ioreg -r -n AppleSmartBattery -d 1")
-            
+
             // Voltage (mV)
             voltageMv = Regex("\"Voltage\" = (\\d+)").find(output)?.groupValues?.get(1)?.toInt()
-            
+
             // Current (mA)
             // Can be negative (discharging) or positive (charging).
             // Sometimes returned as a large unsigned integer for negative values.
@@ -75,7 +90,7 @@ internal class MacOSBatteryReader : PlatformBatteryReader {
                 currentNowMa = amperageStr.toLongOrNull()
                 // Handle unsigned 64-bit wrap-around for negative values
                 if (currentNowMa != null && currentNowMa > 20000) {
-                     currentNowMa = currentNowMa - 18446744073709551615UL.toLong() - 1
+                    currentNowMa = currentNowMa - 18446744073709551615UL.toLong() - 1
                 }
             }
 
@@ -91,13 +106,13 @@ internal class MacOSBatteryReader : PlatformBatteryReader {
             // Capacity (mAh)
             maxCapacityMah = Regex("\"MaxCapacity\" = (\\d+)").find(output)?.groupValues?.get(1)?.toLong()
             designCapacityMah = Regex("\"DesignCapacity\" = (\\d+)").find(output)?.groupValues?.get(1)?.toLong()
-            
+
             // Fallback: Try AppleRawMaxCapacity if MaxCapacity is weird or missing (common on Apple Silicon)
             if (maxCapacityMah == null || maxCapacityMah < 1000) {
-                 val rawMax = Regex("\"AppleRawMaxCapacity\" = (\\d+)").find(output)?.groupValues?.get(1)?.toLong()
-                 if (rawMax != null && rawMax > 0) {
-                     maxCapacityMah = rawMax
-                 }
+                val rawMax = Regex("\"AppleRawMaxCapacity\" = (\\d+)").find(output)?.groupValues?.get(1)?.toLong()
+                if (rawMax != null && rawMax > 0) {
+                    maxCapacityMah = rawMax
+                }
             }
 
             // Fallback for Level & Status (only if pmset failed)
@@ -106,21 +121,21 @@ internal class MacOSBatteryReader : PlatformBatteryReader {
                 if (currentCap != null && maxCapacityMah != null && maxCapacityMah > 0) {
                     level = ((currentCap / maxCapacityMah) * 100).toInt()
                 }
-                
+
                 val isChargingRaw = Regex("\"IsCharging\" = (Yes|No)").find(output)?.groupValues?.get(1)
                 if (isChargingRaw != null) {
                     isCharging = isChargingRaw == "Yes"
                 }
-                
+
                 val externalConnected = Regex("\"ExternalConnected\" = (Yes|No)").find(output)?.groupValues?.get(1)
                 if (externalConnected != null) {
                     isPlugged = externalConnected == "Yes"
                     chargingSource = if (isPlugged) "AC" else "Battery"
                 }
             }
-            
+
             // Apple batteries are generally Li-ion / Li-poly
-            technology = "Li-ion" 
+            technology = "Li-ion"
         }
 
         // 3. Power Saving Mode
@@ -136,7 +151,7 @@ internal class MacOSBatteryReader : PlatformBatteryReader {
             val output = ShellUtils.execute("sysctl -n kern.safe_boot")
             isSafeMode = output.trim() == "1"
         }
-        
+
         // Filter suspicious capacity values (e.g., < 1000 mAh on a laptop)
         // This avoids showing incorrect data when ioreg returns raw/unscaled units.
         val finalMaxCapacity = if (maxCapacityMah != null && maxCapacityMah < 1000) null else maxCapacityMah
@@ -156,7 +171,7 @@ internal class MacOSBatteryReader : PlatformBatteryReader {
             technology = technology,
             chargeCounterUah = finalMaxCapacity?.times(1000),
             designCapacityMah = designCapacityMah,
-            maxCapacityMah = finalMaxCapacity
+            maxCapacityMah = finalMaxCapacity,
         )
     }
 }

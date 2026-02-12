@@ -1,3 +1,18 @@
+/*
+ * Copyright 2026 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.techie.volta
 
 import io.techie.volta.enums.ChargingSource
@@ -27,7 +42,7 @@ import platform.UIKit.*
  * @param scope The CoroutineScope used for emitting events.
  */
 class IOSBatteryStateProvider(
-    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
 ) : BatteryStateProvider {
 
     private val _battery = MutableStateFlow(BatteryState())
@@ -65,14 +80,14 @@ class IOSBatteryStateProvider(
         val notifications = listOf(
             UIDeviceBatteryLevelDidChangeNotification,
             UIDeviceBatteryStateDidChangeNotification,
-            NSProcessInfoPowerStateDidChangeNotification
+            NSProcessInfoPowerStateDidChangeNotification,
         )
 
         notifications.forEach { notificationName ->
             val observer = center.addObserverForName(
                 name = notificationName,
                 `object` = null,
-                queue = null
+                queue = null,
             ) { updateBatteryState() }
             observers.add(observer)
         }
@@ -94,15 +109,15 @@ class IOSBatteryStateProvider(
             voltageMv = Availability.NotSupported,
             temperatureC = Availability.NotSupported,
             health = Availability.NotSupported,
-            technology = null, // Not exposed
-            cycleCount = Availability.NotSupported, // Not exposed
-            currentNowMa = Availability.NotSupported, // Not exposed
-            currentAverageMa = Availability.NotSupported, // Not exposed
-            chargeCounterUah = Availability.NotSupported, // Not exposed
-            remainingEnergyTimeMillis = Availability.NotSupported, // Not exposed
+            technology = null,
+            cycleCount = Availability.NotSupported,
+            currentNowMa = Availability.NotSupported,
+            currentAverageMa = Availability.NotSupported,
+            chargeCounterUah = Availability.NotSupported,
+            remainingEnergyTimeMillis = Availability.NotSupported,
             isPowerSavingMode = isPowerSaving,
             isSafeMode = false,
-            isProtected = false
+            isProtected = false,
         )
     }
 

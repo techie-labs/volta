@@ -13,7 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import androidx.compose.ui.window.ComposeUIViewController
-import io.techie.volta.sample.App
+package io.techie.volta
 
-fun mainViewController() = ComposeUIViewController { App() }
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+
+/**
+ * Creates and remembers a [BatteryState] that updates automatically.
+ *
+ * @return A [State] object holding the current [BatteryState].
+ */
+@Composable
+expect fun rememberBatteryState(): State<BatteryState>

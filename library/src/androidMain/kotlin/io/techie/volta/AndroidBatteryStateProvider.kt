@@ -1,3 +1,18 @@
+/*
+ * Copyright 2026 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.techie.volta
 
 import android.content.BroadcastReceiver
@@ -29,7 +44,7 @@ import kotlinx.coroutines.launch
  */
 class AndroidBatteryStateProvider(
     private val context: Context,
-    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
 ) : BatteryStateProvider {
 
     private val _battery = MutableStateFlow(BatteryState())
@@ -92,8 +107,8 @@ class AndroidBatteryStateProvider(
         val isPlugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) != 0
         val statusInt = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
         val isProtected = isPlugged &&
-                statusInt == BatteryManager.BATTERY_STATUS_NOT_CHARGING &&
-                (level ?: 0) < 100
+            statusInt == BatteryManager.BATTERY_STATUS_NOT_CHARGING &&
+            (level ?: 0) < 100
 
         emitChargingEventIfChanged(chargingStatus)
 
@@ -114,7 +129,7 @@ class AndroidBatteryStateProvider(
             remainingEnergyTimeMillis = getRemainingEnergyTime(),
             isPowerSavingMode = isPowerSaving,
             isSafeMode = isSafeMode,
-            isProtected = isProtected
+            isProtected = isProtected,
         )
     }
 
@@ -131,7 +146,8 @@ class AndroidBatteryStateProvider(
             BatteryManager.BATTERY_STATUS_CHARGING -> ChargingStatus.CHARGING
             BatteryManager.BATTERY_STATUS_FULL -> ChargingStatus.FULL
             BatteryManager.BATTERY_STATUS_DISCHARGING,
-            BatteryManager.BATTERY_STATUS_NOT_CHARGING -> ChargingStatus.DISCHARGING
+            BatteryManager.BATTERY_STATUS_NOT_CHARGING,
+            -> ChargingStatus.DISCHARGING
             else -> ChargingStatus.UNKNOWN
         }
     }

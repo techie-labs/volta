@@ -32,10 +32,15 @@ subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
 
     spotless {
+        lineEndings = com.diffplug.spotless.LineEnding.UNIX
+
         kotlin {
             target("**/*.kt")
             targetExclude("**/build/**/*.kt")
-            ktlint()
+            ktlint().editorConfigOverride(mapOf(
+                "ktlint_standard_no-wildcard-imports" to "disabled",
+                "ktlint_function_naming_ignore_when_annotated_with" to "Composable"
+            ))
             // Ensure a consistent copyright header
             licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
         }

@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -17,14 +16,16 @@ kotlin {
 
     listOf(
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "VoltaSample"
             isStatic = true
+            // Explicitly set bundle ID to avoid warnings and potential build issues
+            freeCompilerArgs += listOf("-Xbinary=bundleId=io.techie.volta.sample")
         }
     }
-    
+
     jvm("desktop")
 
     wasmJs {
@@ -35,7 +36,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.library)
-            
+
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)

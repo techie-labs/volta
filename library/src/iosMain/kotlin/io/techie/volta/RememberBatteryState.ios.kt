@@ -13,7 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import androidx.compose.ui.window.ComposeUIViewController
-import io.techie.volta.sample.App
+package io.techie.volta
 
-fun mainViewController() = ComposeUIViewController { App() }
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+
+@Composable
+actual fun rememberBatteryState(): State<BatteryState> {
+    val provider = remember { IOSBatteryStateProvider() }
+
+    DisposableEffect(Unit) {
+        provider.observe()
+        onDispose { provider.stop() }
+    }
+
+    return provider.battery.collectAsState()
+}

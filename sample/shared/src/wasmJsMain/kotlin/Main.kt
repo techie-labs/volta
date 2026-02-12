@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import androidx.compose.ui.window.ComposeUIViewController
-import io.techie.volta.sample.App
+package io.techie.volta.sample
 
-fun mainViewController() = ComposeUIViewController { App() }
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.window.ComposeViewport
+
+@OptIn(ExperimentalComposeUiApi::class)
+fun main() {
+    ComposeViewport(content = { App() })
+}

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2026 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.techie.volta
 
 /**
@@ -26,7 +41,7 @@ internal class LinuxBatteryReader : PlatformBatteryReader {
         runCatching {
             // Capacity: 0-100%
             level = ShellUtils.readFile("/sys/class/power_supply/BAT0/capacity")?.toIntOrNull()
-            
+
             // Status: "Charging", "Discharging", "Full", "Not charging", "Unknown"
             val status = ShellUtils.readFile("/sys/class/power_supply/BAT0/status") ?: ""
             isCharging = status.equals("Charging", ignoreCase = true)
@@ -37,7 +52,7 @@ internal class LinuxBatteryReader : PlatformBatteryReader {
 
             // Technology: e.g., "Li-ion"
             technology = ShellUtils.readFile("/sys/class/power_supply/BAT0/technology")
-            
+
             // Voltage: usually in microvolts (µV), convert to millivolts (mV)
             val voltageUv = ShellUtils.readFile("/sys/class/power_supply/BAT0/voltage_now")?.toIntOrNull()
             voltage = voltageUv?.div(1000)
@@ -61,12 +76,13 @@ internal class LinuxBatteryReader : PlatformBatteryReader {
             level = level,
             isCharging = isCharging,
             isPlugged = isPlugged,
-            isPowerSaving = false, // Power saving detection varies wildly on Linux (TLP, power-profiles-daemon, etc.)
+            // Power saving detection varies wildly on Linux (TLP, power-profiles-daemon, etc.)
+            isPowerSaving = false,
             isSafeMode = isSafeMode,
             technology = technology,
             voltageMv = voltage,
             chargeCounterUah = chargeCounter,
-            cycleCount = cycleCount
+            cycleCount = cycleCount,
         )
     }
 }

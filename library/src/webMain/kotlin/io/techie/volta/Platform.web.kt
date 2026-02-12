@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import androidx.compose.ui.window.ComposeUIViewController
-import io.techie.volta.sample.App
+package io.techie.volta
 
-fun mainViewController() = ComposeUIViewController { App() }
+class WebPlatform : Platform {
+    override val name: String = "Web"
+}
+
+actual fun getPlatform(): Platform = WebPlatform()

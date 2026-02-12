@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import androidx.compose.ui.window.ComposeUIViewController
-import io.techie.volta.sample.App
+package io.techie.volta
 
-fun mainViewController() = ComposeUIViewController { App() }
+@androidx.compose.runtime.Composable
+actual fun rememberBatteryState(): androidx.compose.runtime.State<BatteryState> {
+    TODO("Not yet implemented")
+}

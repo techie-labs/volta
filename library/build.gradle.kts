@@ -1,8 +1,8 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -25,11 +25,13 @@ kotlin {
     // iOS Targets
     listOf(
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "Volta"
             isStatic = true
+            // Explicitly set bundle ID to avoid warnings and potential build issues
+            freeCompilerArgs += listOf("-Xbinary=bundleId=io.techie.volta")
         }
     }
 
@@ -72,11 +74,11 @@ android {
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
-    
+
     coordinates(
         groupId = "io.techie.volta",
         artifactId = "volta",
-        version = "1.0.0"
+        version = "1.0.0",
     )
 
     pom {
@@ -84,7 +86,7 @@ mavenPublishing {
         description.set("An adaptive template for Compose Multiplatform Library")
         inceptionYear.set("2024")
         url.set("https://github.com/yourusername/volta")
-        
+
         licenses {
             license {
                 name.set("The Apache License, Version 2.0")
@@ -92,7 +94,7 @@ mavenPublishing {
                 distribution.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
             }
         }
-        
+
         developers {
             developer {
                 id.set("yourusername")
@@ -100,7 +102,7 @@ mavenPublishing {
                 url.set("https://github.com/yourusername")
             }
         }
-        
+
         scm {
             url.set("https://github.com/yourusername/volta")
             connection.set("scm:git:git://github.com/yourusername/volta.git")
