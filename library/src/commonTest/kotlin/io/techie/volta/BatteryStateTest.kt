@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.techie.volta
 
 import io.techie.volta.enums.ChargingSource
@@ -23,6 +22,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 
+@Suppress("MagicNumber")
 class BatteryStateTest {
 
     @Test
@@ -57,7 +57,7 @@ class BatteryStateTest {
             chargingSource = ChargingSource.AC,
             voltageMv = Availability.Available(4200),
             temperatureC = Availability.Available(35.5f),
-            technology = "Li-ion"
+            technology = "Li-ion",
         )
 
         assertEquals(true, state.isCharging)
