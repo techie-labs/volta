@@ -11,6 +11,8 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.dokka)
+    // Apply signing plugin explicitly to allow manual configuration
+    signing
 }
 
 // --- DEBUG: CHECK SECRETS PRESENCE ---
@@ -34,6 +36,24 @@ println("----------------------------------------")
 
 version = project.property("VERSION_NAME") as String
 group = "io.techie.volta"
+
+// Manual Signing Configuration (Fallback if plugin auto-detection fails)
+signing {
+    val key = project.findProperty("signingInMemoryKey") as? String
+    val password = project.findProperty("signingInMemoryKeyPassword") as? String
+    val keyId = project.findProperty("signingInMemoryKeyId") as? String
+
+    if (!key.isNullOrEmpty() && !password.isNullOrEmpty()) {
+        println("🔧 Manually configuring InMemoryPgpKeys for Signing Plugin...")
+        if (!keyId.isNullOrEmpty()) {
+            useInMemoryPgpKeys(keyId, key, password)
+        } else {
+            useInMemoryPgpKeys(key, password)
+        }
+    } else {
+        println("⚠️ Signing keys missing or empty during manual configuration.")
+    }
+}
 
 // Maven Publish Configuration
 mavenPublishing {
