@@ -13,6 +13,21 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
+// Map Environment Variables (from GitHub Secrets) to Gradle Properties (expected by Plugin)
+val secretMappings = mapOf(
+    "MAVEN_CENTRAL_USERNAME" to "mavenCentralUsername",
+    "MAVEN_CENTRAL_PASSWORD" to "mavenCentralPassword",
+    "SIGNING_KEY" to "signingInMemoryKey",
+    "SIGNING_KEY_ID" to "signingInMemoryKeyId",
+    "SIGNING_PASSWORD" to "signingInMemoryKeyPassword"
+)
+
+secretMappings.forEach { (envKey, propKey) ->
+    System.getenv(envKey)?.let { value ->
+        project.extensions.extraProperties.set(propKey, value)
+    }
+}
+
 version = project.property("VERSION_NAME") as String
 group = "io.techie.volta"
 
@@ -56,8 +71,8 @@ mavenPublishing {
 
 kotlin {
     androidTarget {
-        // Publish both release and debug variants of the Android library
-        publishLibraryVariants("release", "debug")
+        // Publish only release variant
+        publishLibraryVariants("release")
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
