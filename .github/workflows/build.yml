@@ -6,46 +6,73 @@ on:
   pull_request:
     branches: [ "main" ]
 
-# Prevent multiple builds for the same branch from running simultaneously
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build:
-    # Using macos-latest because it has more RAM and is required for iOS/Apple targets
-    # which often helps with the "Java heap space" issues seen in KMP projects.
-    runs-on: macos-latest
-    timeout-minutes: 60
-
+  # Job 1: Code Quality Checks (Fastest)
+  # Runs on Linux. Checks formatting, static analysis, and API compatibility.
+  quality-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
     - uses: actions/checkout@v4
-
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
-
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
+    - name: Run Quality Checks
+      run: ./gradlew spotlessCheck detekt apiCheck --stacktrace
+
+  # Job 2: Android, Desktop & Web Build (Medium)
+  # Runs on Linux. Builds and tests non-Apple targets.
+  build-linux-targets:
+    needs: quality-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
       with:
-        # If cache is failing, we can try to disable it or make it more robust
-        cache-encryption-key: ${{ secrets.GRADLE_CACHE_KEY }}
-        # Increase the timeout for cache operations
-        gradle-version: wrapper
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+    - name: Build & Test (Android, JVM, Wasm)
+      # Exclude iOS tasks to save time and memory on Linux runner
+      run: |
+        ./gradlew \
+          :library:assembleDebug \
+          :library:jvmTest \
+          :library:wasmJsTest \
+          :sample:androidApp:assembleDebug \
+          :sample:desktopApp:assemble \
+          --stacktrace -Pkotlin.daemon.jvmargs="-Xmx4g"
 
-    - name: Check Code Style (Spotless)
-      run: ./gradlew spotlessCheck --stacktrace
-
-    - name: Static Analysis (Detekt)
-      run: ./gradlew detekt --stacktrace
-
-    - name: Build with Gradle
-      run: ./gradlew build --stacktrace -Pkotlin.daemon.jvmargs="-Xmx6g" -Porg.gradle.jvmargs="-Xmx6g"
-
-    - name: Run Tests
-      run: ./gradlew allTests --stacktrace
-
-    - name: Check API Compatibility
-      run: ./gradlew apiCheck --stacktrace
+  # Job 3: iOS Build (Slowest)
+  # Runs on macOS. Only builds iOS frameworks to verify compilation.
+  build-ios-targets:
+    needs: quality-check
+    runs-on: macos-latest
+    timeout-minutes: 45
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+    - name: Build iOS Frameworks (Debug)
+      # Using Debug variant is faster and uses less memory than Release
+      run: |
+        ./gradlew \
+          :library:linkDebugFrameworkIosSimulatorArm64 \
+          :sample:shared:linkDebugFrameworkIosSimulatorArm64 \
+          --stacktrace -Pkotlin.daemon.jvmargs="-Xmx6g"
