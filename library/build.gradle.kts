@@ -13,6 +13,47 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
+version = project.property("VERSION_NAME") as String
+group = "io.techie.volta"
+
+// Maven Publish Configuration
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+
+    pom {
+        name.set("Volta")
+        description.set(
+            "Volta ⚡ — Kotlin Multiplatform Battery Library. " +
+                "Monitor battery health, charging status, and advanced diagnostics across Android, iOS, and Desktop with unified API.",
+        )
+        inceptionYear.set("2024")
+        url.set("https://github.com/fanggadewangga/volta")
+
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                distribution.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+
+        developers {
+            developer {
+                id.set("fanggadewangga")
+                name.set("Fangga Dewangga")
+                url.set("https://github.com/fanggadewangga")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/fanggadewangga/volta")
+            connection.set("scm:git:git://github.com/fanggadewangga/volta.git")
+            developerConnection.set("scm:git:ssh://git@github.com/fanggadewangga/volta.git")
+        }
+    }
+}
+
 kotlin {
     androidTarget {
         // Publish both release and debug variants of the Android library
@@ -67,46 +108,5 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-}
-
-// Maven Publish Configuration
-mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-    signAllPublications()
-
-    coordinates(
-        groupId = "io.techie.volta",
-        artifactId = "volta",
-        version = "1.0.0",
-    )
-
-    pom {
-        name.set("Volta")
-        description.set("An adaptive template for Compose Multiplatform Library")
-        inceptionYear.set("2024")
-        url.set("https://github.com/yourusername/volta")
-
-        licenses {
-            license {
-                name.set("The Apache License, Version 2.0")
-                url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                distribution.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-            }
-        }
-
-        developers {
-            developer {
-                id.set("yourusername")
-                name.set("Your Name")
-                url.set("https://github.com/yourusername")
-            }
-        }
-
-        scm {
-            url.set("https://github.com/yourusername/volta")
-            connection.set("scm:git:git://github.com/yourusername/volta.git")
-            developerConnection.set("scm:git:ssh://git@github.com/yourusername/volta.git")
-        }
     }
 }
