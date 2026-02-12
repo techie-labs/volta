@@ -14,13 +14,14 @@ plugins {
 }
 
 // Map Environment Variables (from GitHub Secrets) to Gradle Properties (expected by Plugin)
-val secretMappings = mapOf(
-    "MAVEN_CENTRAL_USERNAME" to "mavenCentralUsername",
-    "MAVEN_CENTRAL_PASSWORD" to "mavenCentralPassword",
-    "SIGNING_KEY" to "signingInMemoryKey",
-    "SIGNING_KEY_ID" to "signingInMemoryKeyId",
-    "SIGNING_PASSWORD" to "signingInMemoryKeyPassword"
-)
+val secretMappings =
+    mapOf(
+        "MAVEN_CENTRAL_USERNAME" to "mavenCentralUsername",
+        "MAVEN_CENTRAL_PASSWORD" to "mavenCentralPassword",
+        "SIGNING_KEY" to "signingInMemoryKey",
+        "SIGNING_KEY_ID" to "signingInMemoryKeyId",
+        "SIGNING_PASSWORD" to "signingInMemoryKeyPassword",
+    )
 
 secretMappings.forEach { (envKey, propKey) ->
     System.getenv(envKey)?.let { value ->
