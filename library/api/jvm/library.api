@@ -1,0 +1,160 @@
+public abstract interface class io/techie/volta/Availability {
+}
+
+public final class io/techie/volta/Availability$Available : io/techie/volta/Availability {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lio/techie/volta/Availability$Available;
+	public static synthetic fun copy$default (Lio/techie/volta/Availability$Available;Ljava/lang/Object;ILjava/lang/Object;)Lio/techie/volta/Availability$Available;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/techie/volta/Availability$NotSupported : io/techie/volta/Availability {
+	public static final field $stable I
+	public static final field INSTANCE Lio/techie/volta/Availability$NotSupported;
+}
+
+public final class io/techie/volta/Availability$Unknown : io/techie/volta/Availability {
+	public static final field $stable I
+	public static final field INSTANCE Lio/techie/volta/Availability$Unknown;
+}
+
+public final class io/techie/volta/AvailabilityKt {
+	public static final fun orNull (Lio/techie/volta/Availability;)Ljava/lang/Object;
+}
+
+public final class io/techie/volta/BatteryState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Integer;Lio/techie/volta/enums/ChargingStatus;Lio/techie/volta/enums/ChargingSource;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Ljava/lang/String;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;ZZZ)V
+	public synthetic fun <init> (Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Integer;Lio/techie/volta/enums/ChargingStatus;Lio/techie/volta/enums/ChargingSource;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Ljava/lang/String;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;ZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Boolean;
+	public final fun component10 ()Lio/techie/volta/Availability;
+	public final fun component11 ()Lio/techie/volta/Availability;
+	public final fun component12 ()Lio/techie/volta/Availability;
+	public final fun component13 ()Lio/techie/volta/Availability;
+	public final fun component14 ()Lio/techie/volta/Availability;
+	public final fun component15 ()Z
+	public final fun component16 ()Z
+	public final fun component17 ()Z
+	public final fun component2 ()Ljava/lang/Boolean;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component4 ()Lio/techie/volta/enums/ChargingStatus;
+	public final fun component5 ()Lio/techie/volta/enums/ChargingSource;
+	public final fun component6 ()Lio/techie/volta/Availability;
+	public final fun component7 ()Lio/techie/volta/Availability;
+	public final fun component8 ()Lio/techie/volta/Availability;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Integer;Lio/techie/volta/enums/ChargingStatus;Lio/techie/volta/enums/ChargingSource;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Ljava/lang/String;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;ZZZ)Lio/techie/volta/BatteryState;
+	public static synthetic fun copy$default (Lio/techie/volta/BatteryState;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Integer;Lio/techie/volta/enums/ChargingStatus;Lio/techie/volta/enums/ChargingSource;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Ljava/lang/String;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;Lio/techie/volta/Availability;ZZZILjava/lang/Object;)Lio/techie/volta/BatteryState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChargeCounterUah ()Lio/techie/volta/Availability;
+	public final fun getChargingSource ()Lio/techie/volta/enums/ChargingSource;
+	public final fun getChargingStatus ()Lio/techie/volta/enums/ChargingStatus;
+	public final fun getCurrentAverageMa ()Lio/techie/volta/Availability;
+	public final fun getCurrentNowMa ()Lio/techie/volta/Availability;
+	public final fun getCycleCount ()Lio/techie/volta/Availability;
+	public final fun getHealth ()Lio/techie/volta/Availability;
+	public final fun getLevel ()Ljava/lang/Integer;
+	public final fun getRemainingEnergyTimeMillis ()Lio/techie/volta/Availability;
+	public final fun getTechnology ()Ljava/lang/String;
+	public final fun getTemperatureC ()Lio/techie/volta/Availability;
+	public final fun getVoltageMv ()Lio/techie/volta/Availability;
+	public fun hashCode ()I
+	public final fun isCharging ()Ljava/lang/Boolean;
+	public final fun isLow ()Ljava/lang/Boolean;
+	public final fun isPowerSavingMode ()Z
+	public final fun isProtected ()Z
+	public final fun isSafeMode ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class io/techie/volta/BatteryStateProvider {
+	public abstract fun getBattery ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun getChargingEvents ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun observe ()V
+	public abstract fun stop ()V
+}
+
+public final class io/techie/volta/ChargingStatusChange {
+	public static final field $stable I
+	public fun <init> (Lio/techie/volta/enums/ChargingStatus;Lio/techie/volta/enums/ChargingStatus;)V
+	public final fun component1 ()Lio/techie/volta/enums/ChargingStatus;
+	public final fun component2 ()Lio/techie/volta/enums/ChargingStatus;
+	public final fun copy (Lio/techie/volta/enums/ChargingStatus;Lio/techie/volta/enums/ChargingStatus;)Lio/techie/volta/ChargingStatusChange;
+	public static synthetic fun copy$default (Lio/techie/volta/ChargingStatusChange;Lio/techie/volta/enums/ChargingStatus;Lio/techie/volta/enums/ChargingStatus;ILjava/lang/Object;)Lio/techie/volta/ChargingStatusChange;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFrom ()Lio/techie/volta/enums/ChargingStatus;
+	public final fun getTo ()Lio/techie/volta/enums/ChargingStatus;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/techie/volta/DesktopBatteryStateProvider : io/techie/volta/BatteryStateProvider {
+	public static final field $stable I
+	public static final field Companion Lio/techie/volta/DesktopBatteryStateProvider$Companion;
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;)V
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getBattery ()Lkotlinx/coroutines/flow/StateFlow;
+	public fun getChargingEvents ()Lkotlinx/coroutines/flow/Flow;
+	public fun observe ()V
+	public fun stop ()V
+}
+
+public final class io/techie/volta/DesktopBatteryStateProvider$Companion {
+}
+
+public final class io/techie/volta/JVMPlatform : io/techie/volta/Platform {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun getName ()Ljava/lang/String;
+}
+
+public abstract interface class io/techie/volta/Platform {
+	public abstract fun getName ()Ljava/lang/String;
+}
+
+public final class io/techie/volta/Platform_jvmKt {
+	public static final fun getPlatform ()Lio/techie/volta/Platform;
+}
+
+public final class io/techie/volta/RememberBatteryState_desktopKt {
+	public static final fun rememberBatteryState (Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public final class io/techie/volta/enums/BatteryHealth : java/lang/Enum {
+	public static final field DEAD Lio/techie/volta/enums/BatteryHealth;
+	public static final field GOOD Lio/techie/volta/enums/BatteryHealth;
+	public static final field OVERHEAT Lio/techie/volta/enums/BatteryHealth;
+	public static final field OVER_VOLTAGE Lio/techie/volta/enums/BatteryHealth;
+	public static final field UNKNOWN Lio/techie/volta/enums/BatteryHealth;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/techie/volta/enums/BatteryHealth;
+	public static fun values ()[Lio/techie/volta/enums/BatteryHealth;
+}
+
+public final class io/techie/volta/enums/ChargingSource : java/lang/Enum {
+	public static final field AC Lio/techie/volta/enums/ChargingSource;
+	public static final field UNKNOWN Lio/techie/volta/enums/ChargingSource;
+	public static final field USB Lio/techie/volta/enums/ChargingSource;
+	public static final field WIRELESS Lio/techie/volta/enums/ChargingSource;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/techie/volta/enums/ChargingSource;
+	public static fun values ()[Lio/techie/volta/enums/ChargingSource;
+}
+
+public final class io/techie/volta/enums/ChargingStatus : java/lang/Enum {
+	public static final field CHARGING Lio/techie/volta/enums/ChargingStatus;
+	public static final field DISCHARGING Lio/techie/volta/enums/ChargingStatus;
+	public static final field FULL Lio/techie/volta/enums/ChargingStatus;
+	public static final field UNKNOWN Lio/techie/volta/enums/ChargingStatus;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/techie/volta/enums/ChargingStatus;
+	public static fun values ()[Lio/techie/volta/enums/ChargingStatus;
+}
+
