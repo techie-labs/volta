@@ -13,7 +13,8 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
-// Map Environment Variables (from GitHub Secrets) to Gradle Properties (expected by Plugin)
+// --- DEBUG & SETUP SECRETS ---
+println("--- CONFIGURING SECRETS ---")
 val secretMappings =
     mapOf(
         "MAVEN_CENTRAL_USERNAME" to "mavenCentralUsername",
@@ -24,10 +25,19 @@ val secretMappings =
     )
 
 secretMappings.forEach { (envKey, propKey) ->
-    System.getenv(envKey)?.let { value ->
-        project.extensions.extraProperties.set(propKey, value)
+    val envValue = System.getenv(envKey)
+    if (!envValue.isNullOrEmpty()) {
+        println("✅ Found ENV variable: $envKey -> Setting Gradle Property: $propKey")
+        // Set on current project
+        extra.set(propKey, envValue)
+        // Set on root project just in case
+        rootProject.extensions.extraProperties.set(propKey, envValue)
+    } else {
+        println("❌ MISSING ENV variable: $envKey")
     }
 }
+println("---------------------------")
+// -----------------------------
 
 version = project.property("VERSION_NAME") as String
 group = "io.techie.volta"
