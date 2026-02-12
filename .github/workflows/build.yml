@@ -6,9 +6,17 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Prevent multiple builds for the same branch from running simultaneously
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # Using macos-latest because it has more RAM and is required for iOS/Apple targets
+    # which often helps with the "Java heap space" issues seen in KMP projects.
+    runs-on: macos-latest
+    timeout-minutes: 60
 
     steps:
     - uses: actions/checkout@v4
@@ -20,19 +28,24 @@ jobs:
         distribution: 'temurin'
 
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        # If cache is failing, we can try to disable it or make it more robust
+        cache-encryption-key: ${{ secrets.GRADLE_CACHE_KEY }}
+        # Increase the timeout for cache operations
+        gradle-version: wrapper
 
     - name: Check Code Style (Spotless)
-      run: ./gradlew spotlessCheck
+      run: ./gradlew spotlessCheck --stacktrace
 
     - name: Static Analysis (Detekt)
-      run: ./gradlew detekt
+      run: ./gradlew detekt --stacktrace
 
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build --stacktrace -Pkotlin.daemon.jvmargs="-Xmx6g" -Porg.gradle.jvmargs="-Xmx6g"
 
     - name: Run Tests
-      run: ./gradlew allTests
+      run: ./gradlew allTests --stacktrace
 
     - name: Check API Compatibility
-      run: ./gradlew apiCheck
+      run: ./gradlew apiCheck --stacktrace
