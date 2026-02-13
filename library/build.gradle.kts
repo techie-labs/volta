@@ -1,6 +1,5 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -13,38 +12,16 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
-// --- DEBUG & SETUP SECRETS ---
-println("--- CONFIGURING SECRETS ---")
-val secretMappings =
-    mapOf(
-        "MAVEN_CENTRAL_USERNAME" to "mavenCentralUsername",
-        "MAVEN_CENTRAL_PASSWORD" to "mavenCentralPassword",
-        "SIGNING_KEY" to "signingInMemoryKey",
-        "SIGNING_KEY_ID" to "signingInMemoryKeyId",
-        "SIGNING_PASSWORD" to "signingInMemoryKeyPassword",
-    )
-
-secretMappings.forEach { (envKey, propKey) ->
-    val envValue = System.getenv(envKey)
-    if (!envValue.isNullOrEmpty()) {
-        println("✅ Found ENV variable: $envKey -> Setting Gradle Property: $propKey")
-        // Set on current project
-        extra.set(propKey, envValue)
-        // Set on root project just in case
-        rootProject.extensions.extraProperties.set(propKey, envValue)
-    } else {
-        println("❌ MISSING ENV variable: $envKey")
-    }
-}
-println("---------------------------")
-// -----------------------------
-
 version = project.property("VERSION_NAME") as String
-group = "io.techie.volta"
+group = "io.github.techie-labs"
 
 // Maven Publish Configuration
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    coordinates(
+        groupId = "io.github.techie-labs",
+        artifactId = "volta",
+    )
+    publishToMavenCentral(automaticRelease = false)
     signAllPublications()
 
     pom {
@@ -125,7 +102,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.techie.volta"
+    namespace = "io.github.fanggadewangga.volta"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
