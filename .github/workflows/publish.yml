@@ -29,10 +29,19 @@ jobs:
 
       - name: Publish to Maven Central
         run: ./gradlew publishToMavenCentral --no-configuration-cache -PVERSION_NAME=${GITHUB_REF_NAME#v}
-
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ env.SIGNING_KEY_DECODED }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+
+      - name: Update README version
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          sed -i "s|io.github.techie-labs:volta:[^\"]*|io.github.techie-labs:volta:$VERSION|g" README.md
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --cached --quiet || git commit -m "docs: update README version to $VERSION"
+          git push origin HEAD:main

@@ -31,7 +31,7 @@ Add Volta to your `commonMain` dependencies in your `build.gradle.kts` file:
 
 ```kotlin
 commonMain.dependencies {
-    implementation("io.github.techie-labs:volta:1.0.0-beta01")
+    implementation("io.github.techie-labs:volta:VOLTA_VERSION")
 }
 ```
 
