@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.dokka)
-    // Apply signing plugin explicitly to allow manual configuration
+    // Apply signing plugin explicitly
     signing
 }
 
@@ -25,7 +25,6 @@ listOf(
     "signingInMemoryKeyPassword",
 ).forEach { key ->
     if (project.hasProperty(key)) {
-        // Do NOT print the value, just presence
         println("✅ Property '$key' is present.")
     } else {
         println("❌ Property '$key' is MISSING.")
@@ -37,27 +36,10 @@ println("----------------------------------------")
 version = project.property("VERSION_NAME") as String
 group = "io.techie.volta"
 
-// Manual Signing Configuration (Fallback if plugin auto-detection fails)
-signing {
-    val key = project.findProperty("signingInMemoryKey") as? String
-    val password = project.findProperty("signingInMemoryKeyPassword") as? String
-    val keyId = project.findProperty("signingInMemoryKeyId") as? String
-
-    if (!key.isNullOrEmpty() && !password.isNullOrEmpty()) {
-        println("🔧 Manually configuring InMemoryPgpKeys for Signing Plugin...")
-        if (!keyId.isNullOrEmpty()) {
-            useInMemoryPgpKeys(keyId, key, password)
-        } else {
-            useInMemoryPgpKeys(key, password)
-        }
-    } else {
-        println("⚠️ Signing keys missing or empty during manual configuration.")
-    }
-}
-
 // Maven Publish Configuration
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    // REMOVED: signAllPublications() - We will configure signing manually below
     signAllPublications()
 
     pom {
@@ -89,6 +71,30 @@ mavenPublishing {
             url.set("https://github.com/fanggadewangga/volta")
             connection.set("scm:git:git://github.com/fanggadewangga/volta.git")
             developerConnection.set("scm:git:ssh://git@github.com/fanggadewangga/volta.git")
+        }
+    }
+}
+
+// Manual Signing Configuration (Wrapped in afterEvaluate to ensure publications exist)
+afterEvaluate {
+    signing {
+        val key = project.findProperty("signingInMemoryKey") as? String
+        val password = project.findProperty("signingInMemoryKeyPassword") as? String
+        val keyId = project.findProperty("signingInMemoryKeyId") as? String
+
+        if (!key.isNullOrEmpty() && !password.isNullOrEmpty()) {
+            println("🔧 Manually configuring InMemoryPgpKeys...")
+            if (!keyId.isNullOrEmpty()) {
+                useInMemoryPgpKeys(keyId, key, password)
+            } else {
+                useInMemoryPgpKeys(key, password)
+            }
+            
+            // Sign all publications created by the plugins
+            val publishing = extensions.getByType<PublishingExtension>()
+            sign(publishing.publications)
+        } else {
+            println("⚠️ Signing keys missing or empty. Skipping signing configuration.")
         }
     }
 }
