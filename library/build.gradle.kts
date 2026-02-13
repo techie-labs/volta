@@ -11,27 +11,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.dokka)
-    // Apply signing plugin explicitly
-    signing
 }
-
-// --- DEBUG: CHECK SECRETS PRESENCE ---
-println("--- CHECKING GRADLE PROPERTIES (Secrets) ---")
-listOf(
-    "mavenCentralUsername",
-    "mavenCentralPassword",
-    "signingInMemoryKey",
-    "signingInMemoryKeyId",
-    "signingInMemoryKeyPassword",
-).forEach { key ->
-    if (project.hasProperty(key)) {
-        println("✅ Property '$key' is present.")
-    } else {
-        println("❌ Property '$key' is MISSING.")
-    }
-}
-println("----------------------------------------")
-// -------------------------------------
 
 version = project.property("VERSION_NAME") as String
 group = "io.techie.volta"
@@ -39,7 +19,6 @@ group = "io.techie.volta"
 // Maven Publish Configuration
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-    // REMOVED: signAllPublications() - We will configure signing manually below
     signAllPublications()
 
     pom {
@@ -75,29 +54,6 @@ mavenPublishing {
     }
 }
 
-// Manual Signing Configuration (Wrapped in afterEvaluate to ensure publications exist)
-afterEvaluate {
-    signing {
-        val key = project.findProperty("signingInMemoryKey") as? String
-        val password = project.findProperty("signingInMemoryKeyPassword") as? String
-        val keyId = project.findProperty("signingInMemoryKeyId") as? String
-
-        if (!key.isNullOrEmpty() && !password.isNullOrEmpty()) {
-            println("🔧 Manually configuring InMemoryPgpKeys...")
-            if (!keyId.isNullOrEmpty()) {
-                useInMemoryPgpKeys(keyId, key, password)
-            } else {
-                useInMemoryPgpKeys(key, password)
-            }
-            
-            // Sign all publications created by the plugins
-            val publishing = extensions.getByType<PublishingExtension>()
-            sign(publishing.publications)
-        } else {
-            println("⚠️ Signing keys missing or empty. Skipping signing configuration.")
-        }
-    }
-}
 
 kotlin {
     androidTarget {
