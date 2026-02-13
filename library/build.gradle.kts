@@ -1,6 +1,5 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -18,7 +17,7 @@ group = "io.techie.volta"
 
 // Maven Publish Configuration
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    publishToMavenCentral(automaticRelease = false)
     signAllPublications()
 
     pom {
@@ -53,7 +52,6 @@ mavenPublishing {
         }
     }
 }
-
 
 kotlin {
     androidTarget {
