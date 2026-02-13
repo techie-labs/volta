@@ -13,10 +13,14 @@ plugins {
 }
 
 version = project.property("VERSION_NAME") as String
-group = "io.techie.volta"
+group = "io.github.techie-labs"
 
 // Maven Publish Configuration
 mavenPublishing {
+    coordinates(
+        groupId = "io.github.techie-labs",
+        artifactId = "volta",
+    )
     publishToMavenCentral(automaticRelease = false)
     signAllPublications()
 
@@ -98,7 +102,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.techie.volta"
+    namespace = "io.github.fanggadewangga.volta"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
