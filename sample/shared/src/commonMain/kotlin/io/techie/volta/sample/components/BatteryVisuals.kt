@@ -3,8 +3,7 @@ package io.techie.volta.sample.components
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bolt
+import io.techie.volta.ui.VoltaBatteryIcon
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,17 +16,15 @@ import androidx.compose.ui.unit.dp
 import io.techie.volta.core.BatteryState
 
 @Composable
-fun HeaderSection() {
+fun HeaderSection(state: BatteryState) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Icon(
-            imageVector = Icons.Filled.Bolt,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(32.dp),
+        VoltaBatteryIcon(
+            state = state,
+            modifier = Modifier.size(32.dp).width(64.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(

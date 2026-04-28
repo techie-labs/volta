@@ -31,7 +31,14 @@ Add Volta to your `commonMain` dependencies in your `build.gradle.kts` file:
 
 ```kotlin
 commonMain.dependencies {
+    // Core hardware logic (Required)
     implementation("io.github.techie-labs:volta:1.0.0-beta02")
+    
+    // Optional: Ready-to-use Compose Widgets
+    implementation("io.github.techie-labs:volta-ui-compose:1.0.0-beta02")
+    
+    // Optional: Mock provider for Previews and Unit Tests
+    implementation("io.github.techie-labs:volta-mock:1.0.0-beta02")
 }
 ```
 
@@ -74,6 +81,28 @@ class BatteryViewModel(private val batteryProvider: BatteryStateProvider) {
                 println("Current Level: ${state.level}%")
             }
         }
+    }
+}
+```
+
+### 3. Using Pre-built Compose Widgets (`volta-ui-compose`)
+
+If you don't want to build battery UI from scratch, use our plug-and-play components:
+
+```kotlin
+import io.techie.volta.ui.VoltaBatteryIcon
+import io.techie.volta.ui.ThermalWarningBanner
+
+@Composable
+fun BatteryDashboard() {
+    val battery by rememberBatteryState()
+
+    Column {
+        // Dynamic vector icon that fills up and changes color
+        VoltaBatteryIcon(state = battery, modifier = Modifier.height(32.dp).width(64.dp))
+        
+        // Auto-appearing banner when device overheats (>= 45°C)
+        ThermalWarningBanner(state = battery)
     }
 }
 ```
@@ -130,6 +159,25 @@ val dump = batteryState.getDiagnosticDump()
 // Example: crashlytics.setCustomKeys(dump)
 ```
 
+### 4. UI Testing & Previews (`volta-mock`)
+
+Use `VoltaMock` to simulate hardware states in Compose Previews without physical devices:
+
+```kotlin
+import io.techie.volta.mock.VoltaMock
+
+@Preview
+@Composable
+fun LowBatteryPreview() {
+    val mockProvider = VoltaMock()
+    mockProvider.setBatteryLevel(10)
+    mockProvider.setCharging(false)
+    mockProvider.setPowerSavingMode(true)
+    
+    // Provide to your UI component...
+}
+```
+
 ## 📱 Platform Support & Permissions
 
 ### 🤖 Android
@@ -146,20 +194,24 @@ val dump = batteryState.getDiagnosticDump()
 *   **macOS**: Uses `pmset` and `system_profiler`.
 *   **Linux**: Reads from `/sys/class/power_supply/`.
 
+### 🌐 Web (Wasm)
+*   **API**: HTML5 Battery Status API (`navigator.getBattery()`).
+*   **Note**: Privacy-focused. Only exposes Level, Charging Status, and Time Remaining. Advanced metrics (Temperature, Voltage, Cycles) are strictly limited by browsers to prevent fingerprinting.
+
 ## 📊 Feature Matrix
 
-| Feature | Android 🤖 | iOS 🍎 | Windows 🪟 | macOS 🍏 |
-| :--- | :---: | :---: | :---: |:--------:|
-| **Level & Status** | ✅ | ✅ | ✅ |    ✅     |
-| **Power Saving** | ✅ | ✅ | ❌ |    ❌     |
-| **Voltage** | ✅ | ❌ | ❌ |    ✅     |
-| **Temperature** | ✅ | ❌ | ❌ |    ✅     |
-| **Technology** | ✅ | ❌ | ❌ |    ✅     |
-| **Cycles** | ✅ (14+) | ❌ | ✅ |    ✅     |
-| **Current (Now)** | ✅ | ❌ | ❌ |    ✅     |
-| **Safe Mode** | ✅ | ❌ | ❌ |    ❌     |
-| **Time Remaining** | ❌ | ❌ | ❌ |    ❌     |
-| **Capacity** | ✅ | ❌ | ❌ |     ✅     |
+| Feature | Android 🤖 | iOS 🍎 | Windows 🪟 | macOS 🍏 | Web (Wasm) 🌐 |
+| :--- | :---: | :---: | :---: |:--------:|:--------:|
+| **Level & Status** | ✅ | ✅ | ✅ |    ✅     |    ✅     |
+| **Power Saving** | ✅ | ✅ | ❌ |    ❌     |    ❌     |
+| **Voltage** | ✅ | ❌ | ❌ |    ✅     |    ❌     |
+| **Temperature** | ✅ | ❌ | ❌ |    ✅     |    ❌     |
+| **Technology** | ✅ | ❌ | ❌ |    ✅     |    ❌     |
+| **Cycles** | ✅ (14+) | ❌ | ✅ |    ✅     |    ❌     |
+| **Current (Now)** | ✅ | ❌ | ❌ |    ✅     |    ❌     |
+| **Safe Mode** | ✅ | ❌ | ❌ |    ❌     |    ❌     |
+| **Time Remaining** | ❌ | ❌ | ❌ |    ✅     |    ✅     |
+| **Capacity** | ✅ | ❌ | ❌ |     ✅     |    ❌     |
 
 ## 🧪 Testing
 
