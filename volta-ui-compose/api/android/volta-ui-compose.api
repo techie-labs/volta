@@ -1,0 +1,8 @@
+public final class io/techie/volta/ui/ThermalWarningBannerKt {
+	public static final fun ThermalWarningBanner (Lio/techie/volta/core/BatteryState;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class io/techie/volta/ui/VoltaBatteryIconKt {
+	public static final fun VoltaBatteryIcon (Lio/techie/volta/core/BatteryState;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
