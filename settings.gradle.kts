@@ -34,6 +34,8 @@ plugins {
 }
 
 include(":library")
+include(":volta-ui-compose")
+include(":volta-mock")
 include(":sample:shared")
 include(":sample:androidApp")
 include(":sample:desktopApp")

@@ -36,6 +36,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.library)
+            implementation(projects.voltaUiCompose)
+            implementation(projects.voltaMock)
 
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)

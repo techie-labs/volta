@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.techie.volta.compose.rememberBatteryState
+import io.techie.volta.ui.ThermalWarningBanner
 import io.techie.volta.sample.components.AdditionalInfoSection
 import io.techie.volta.sample.components.BatteryCircularIndicator
 import io.techie.volta.sample.components.DetailsGrid
@@ -49,8 +50,11 @@ fun App() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
+                // Thermal Warning
+                ThermalWarningBanner(batteryState)
+
                 // Header
-                HeaderSection()
+                HeaderSection(batteryState)
 
                 // Main Battery Indicator
                 BatteryCircularIndicator(batteryState)
