@@ -15,7 +15,6 @@
  */
 package io.techie.volta.devtools
 import io.techie.volta.core.BatteryStateProvider
-
 import kotlin.time.Duration
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
@@ -28,12 +27,12 @@ data class VoltaSessionReport(
     val duration: Duration,
     val startBatteryPercent: Int?,
     val endBatteryPercent: Int?,
-    val averageDischargeRatePercentPerHour: Float?
+    val averageDischargeRatePercentPerHour: Float?,
 )
 
 /**
  * A tool to profile battery consumption over a specific session or feature execution.
- * 
+ *
  * session-based battery consumption metrics without intertwining with core provider logic.
  */
 class BatteryProfiler(private val provider: BatteryStateProvider) {
@@ -46,7 +45,7 @@ class BatteryProfiler(private val provider: BatteryStateProvider) {
         val startLevel = provider.battery.value.level
         activeSessions[name] = SessionData(
             startTimeMark = TimeSource.Monotonic.markNow(),
-            startLevel = startLevel
+            startLevel = startLevel,
         )
     }
 
@@ -55,28 +54,32 @@ class BatteryProfiler(private val provider: BatteryStateProvider) {
      */
     fun stopSession(name: String): VoltaSessionReport? {
         val session = activeSessions.remove(name) ?: return null
-        
+
         val duration = session.startTimeMark.elapsedNow()
         val endLevel = provider.battery.value.level
-        
+
         val rate = if (duration.inWholeSeconds > 0 && session.startLevel != null && endLevel != null) {
             val drop = session.startLevel - endLevel
             if (drop > 0) {
                 (drop.toFloat() / (duration.inWholeSeconds.toFloat() / 3600f))
-            } else 0f
-        } else null
+            } else {
+                0f
+            }
+        } else {
+            null
+        }
 
         return VoltaSessionReport(
             sessionName = name,
             duration = duration,
             startBatteryPercent = session.startLevel,
             endBatteryPercent = endLevel,
-            averageDischargeRatePercentPerHour = rate
+            averageDischargeRatePercentPerHour = rate,
         )
     }
 
     private data class SessionData(
         val startTimeMark: TimeMark,
-        val startLevel: Int?
+        val startLevel: Int?,
     )
 }

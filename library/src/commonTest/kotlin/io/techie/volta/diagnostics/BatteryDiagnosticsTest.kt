@@ -16,7 +16,6 @@
 package io.techie.volta.diagnostics
 import io.techie.volta.core.Availability
 import io.techie.volta.core.BatteryState
-
 import io.techie.volta.enums.BatteryHealth
 import io.techie.volta.enums.ChargingSource
 import io.techie.volta.enums.ChargingStatus
@@ -36,7 +35,7 @@ class BatteryDiagnosticsTest {
             cycleCount = Availability.Available(150),
             voltageMv = Availability.Available(4200),
             temperatureC = Availability.Available(32.5f),
-            health = Availability.Available(BatteryHealth.GOOD)
+            health = Availability.Available(BatteryHealth.GOOD),
         )
 
         val dump = state.getDiagnosticDump()
@@ -63,7 +62,7 @@ class BatteryDiagnosticsTest {
             cycleCount = Availability.NotSupported,
             voltageMv = Availability.Unknown,
             temperatureC = Availability.NotSupported,
-            health = Availability.Unknown
+            health = Availability.Unknown,
         )
 
         val dump = state.getDiagnosticDump()

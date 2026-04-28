@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 package io.techie.volta.compose
-import io.techie.volta.provider.DesktopBatteryStateProvider
-import io.techie.volta.core.BatteryState
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import io.techie.volta.VoltaFactory
+import io.techie.volta.VoltaSensorState
+import io.techie.volta.core.BatteryState
 
 @Composable
-actual fun rememberBatteryState(): State<BatteryState> {
-    val provider = remember { DesktopBatteryStateProvider() }
+actual fun rememberBatteryState(): State<VoltaSensorState<BatteryState>> {
+    val volta = remember { VoltaFactory.create() }
 
     DisposableEffect(Unit) {
-        provider.observe()
-        onDispose { provider.stop() }
+        volta.startMonitoring()
+        onDispose { volta.stopMonitoring() }
     }
 
-    return provider.battery.collectAsState()
+    return volta.batteryState.collectAsState()
 }

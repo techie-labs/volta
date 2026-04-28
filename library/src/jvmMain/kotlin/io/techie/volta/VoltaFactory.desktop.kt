@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.techie.volta.sample.utils
+package io.techie.volta
 
-import io.techie.volta.core.Availability
+import io.techie.volta.internal.VoltaImpl
+import io.techie.volta.provider.DesktopBatteryStateProvider
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 
-fun <T> Availability<T>.toStringValue(transform: (T) -> String = { it.toString() }): String {
-    return when (this) {
-        is Availability.Available -> transform(value)
-        is Availability.NotSupported -> "N/A"
-        is Availability.Unknown -> "--"
+actual object VoltaFactory {
+    actual fun create(dispatcher: CoroutineDispatcher): Volta {
+        val provider = DesktopBatteryStateProvider(
+            scope = CoroutineScope(SupervisorJob() + dispatcher),
+        )
+        return VoltaImpl(provider, dispatcher)
     }
 }

@@ -16,7 +16,6 @@
 package io.techie.volta.devtools
 import io.techie.volta.core.Availability
 import io.techie.volta.core.BatteryStateProvider
-
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
@@ -29,7 +28,7 @@ data class ExecutionCondition(
     val minBatteryLevel: Int = 20,
     val requiresCharging: Boolean = false,
     val maxTemperatureC: Float = 40.0f,
-    val ignorePowerSavingMode: Boolean = false
+    val ignorePowerSavingMode: Boolean = false,
 )
 
 /**
@@ -42,14 +41,14 @@ fun BatteryStateProvider.observeSafeExecution(condition: ExecutionCondition): Fl
     return this.battery.map { state ->
         val levelOk = state.level?.let { it >= condition.minBatteryLevel } ?: true
         val chargingOk = !condition.requiresCharging || (state.isCharging == true)
-        
+
         val tempOk = when (val temp = state.temperatureC) {
             is Availability.Available -> temp.value <= condition.maxTemperatureC
             else -> true // Optimistic fallback if temperature is not supported on the platform
         }
-        
+
         val powerModeOk = condition.ignorePowerSavingMode || !state.isPowerSavingMode
-        
+
         levelOk && chargingOk && tempOk && powerModeOk
     }.distinctUntilChanged()
 }
@@ -60,7 +59,7 @@ fun BatteryStateProvider.observeSafeExecution(condition: ExecutionCondition): Fl
  */
 suspend fun <T> BatteryStateProvider.whenOptimal(
     condition: ExecutionCondition,
-    block: suspend () -> T
+    block: suspend () -> T,
 ): T {
     observeSafeExecution(condition).first { isOptimal -> isOptimal }
     return block()

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 package io.techie.volta.devtools
-import io.techie.volta.core.ChargingStatusChange
-import io.techie.volta.core.BatteryStateProvider
 import io.techie.volta.core.BatteryState
-
+import io.techie.volta.core.BatteryStateProvider
+import io.techie.volta.core.ChargingStatusChange
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -46,7 +45,7 @@ class BatteryProfilerTest {
 
         // Simulate a battery drop
         provider.mutableState.value = BatteryState(level = 95)
-        
+
         val report = profiler.stopSession("TestSession")
 
         assertNotNull(report)

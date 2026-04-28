@@ -72,11 +72,11 @@ internal class LinuxBatteryReader : PlatformBatteryReader {
             isSafeMode = cmdline.contains("rescue") || cmdline.contains("single") || cmdline.contains("emergency")
         }
 
+        // Power saving detection varies wildly on Linux (TLP, power-profiles-daemon, etc.)
         return DesktopBatteryReader.Info(
             level = level,
             isCharging = isCharging,
             isPlugged = isPlugged,
-            // Power saving detection varies wildly on Linux (TLP, power-profiles-daemon, etc.)
             isPowerSaving = false,
             isSafeMode = isSafeMode,
             technology = technology,

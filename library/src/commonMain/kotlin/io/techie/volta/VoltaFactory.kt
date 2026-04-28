@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.techie.volta.sample.utils
+package io.techie.volta
 
-import io.techie.volta.core.Availability
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
-fun <T> Availability<T>.toStringValue(transform: (T) -> String = { it.toString() }): String {
-    return when (this) {
-        is Availability.Available -> transform(value)
-        is Availability.NotSupported -> "N/A"
-        is Availability.Unknown -> "--"
-    }
+expect object VoltaFactory {
+    fun create(
+        dispatcher: CoroutineDispatcher = Dispatchers.Default,
+    ): Volta
 }

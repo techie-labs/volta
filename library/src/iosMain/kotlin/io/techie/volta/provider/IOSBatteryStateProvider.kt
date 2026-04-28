@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 package io.techie.volta.provider
-import io.techie.volta.core.ChargingStatusChange
 import io.techie.volta.core.Availability
-import io.techie.volta.core.BatteryStateProvider
 import io.techie.volta.core.BatteryState
-
+import io.techie.volta.core.BatteryStateProvider
+import io.techie.volta.core.ChargingStatusChange
 import io.techie.volta.enums.ChargingSource
 import io.techie.volta.enums.ChargingStatus
 import kotlinx.coroutines.CoroutineScope
