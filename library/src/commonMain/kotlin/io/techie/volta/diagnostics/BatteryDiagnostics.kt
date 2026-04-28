@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 package io.techie.volta.diagnostics
-import io.techie.volta.core.orNull
-import io.techie.volta.core.BatteryStateProvider
 import io.techie.volta.core.BatteryState
+import io.techie.volta.core.BatteryStateProvider
+import io.techie.volta.core.orNull
 
 /**
  * Constants used as keys for the diagnostic dump map.
@@ -50,7 +50,7 @@ fun BatteryState.getDiagnosticDump(): Map<String, String> {
         DiagnosticKeys.CYCLE_COUNT to (cycleCount.orNull()?.toString() ?: "UNKNOWN"),
         DiagnosticKeys.VOLTAGE_MV to (voltageMv.orNull()?.toString() ?: "UNKNOWN"),
         DiagnosticKeys.TEMPERATURE_C to (temperatureC.orNull()?.toString() ?: "UNKNOWN"),
-        DiagnosticKeys.HEALTH to (health.orNull()?.name ?: "UNKNOWN")
+        DiagnosticKeys.HEALTH to (health.orNull()?.name ?: "UNKNOWN"),
     )
 }
 

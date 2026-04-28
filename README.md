@@ -50,19 +50,29 @@ Get reactive battery updates in your UI with just one line of code:
 
 ```kotlin
 import androidx.compose.runtime.getValue
-import io.techie.volta.rememberBatteryState
+import io.techie.volta.compose.rememberBatteryState
+import io.techie.volta.VoltaSensorState
 
 @Composable
 fun BatteryDashboard() {
-    val battery by rememberBatteryState()
+    val sensorState by rememberBatteryState()
 
-    Column {
-        Text("Battery Level: ${battery.level}%")
-        Text("Charging Status: ${battery.chargingStatus}")
+    when (sensorState) {
+        is VoltaSensorState.Loading -> Text("Connecting to battery sensor...")
+        is VoltaSensorState.PermissionDenied -> Text("⚠️ Please grant battery permissions.")
+        is VoltaSensorState.HardwareNotSupported -> Text("⚠️ Battery sensor not supported on this device.")
+        is VoltaSensorState.Available -> {
+            val battery = (sensorState as VoltaSensorState.Available).data
+            Column {
+                Text("Battery Level: ${battery.level}%")
+                Text("Charging Status: ${battery.chargingStatus}")
 
-        if (battery.isPowerSavingMode) {
-            Text("⚠️ Low Power Mode is ON")
+                if (battery.isPowerSavingMode) {
+                    Text("⚠️ Low Power Mode is ON")
+                }
+            }
         }
+        else -> Text("Unknown sensor state")
     }
 }
 ```
@@ -72,13 +82,23 @@ fun BatteryDashboard() {
 Observe battery changes in your business logic:
 
 ```kotlin
-class BatteryViewModel(private val batteryProvider: BatteryStateProvider) {
+import io.techie.volta.VoltaFactory
+import io.techie.volta.VoltaSensorState
+
+class BatteryViewModel {
+    // 1. Create a platform-specific instance via Factory
+    private val volta = VoltaFactory.create()
+
     init {
-        batteryProvider.observe()
+        // 2. Start monitoring hardware events
+        volta.startMonitoring()
         
         viewModelScope.launch {
-            batteryProvider.battery.collect { state ->
-                println("Current Level: ${state.level}%")
+            // 3. Collect state safely
+            volta.batteryState.collect { state ->
+                if (state is VoltaSensorState.Available) {
+                    println("Current Level: ${state.data.level}%")
+                }
             }
         }
     }
@@ -92,17 +112,21 @@ If you don't want to build battery UI from scratch, use our plug-and-play compon
 ```kotlin
 import io.techie.volta.ui.VoltaBatteryIcon
 import io.techie.volta.ui.ThermalWarningBanner
+import io.techie.volta.VoltaSensorState
 
 @Composable
 fun BatteryDashboard() {
-    val battery by rememberBatteryState()
+    val sensorState by rememberBatteryState()
 
-    Column {
-        // Dynamic vector icon that fills up and changes color
-        VoltaBatteryIcon(state = battery, modifier = Modifier.height(32.dp).width(64.dp))
-        
-        // Auto-appearing banner when device overheats (>= 45°C)
-        ThermalWarningBanner(state = battery)
+    if (sensorState is VoltaSensorState.Available) {
+        val battery = (sensorState as VoltaSensorState.Available).data
+        Column {
+            // Dynamic vector icon that fills up and changes color
+            VoltaBatteryIcon(state = battery, modifier = Modifier.height(32.dp).width(64.dp))
+            
+            // Auto-appearing banner when device overheats (>= 45°C)
+            ThermalWarningBanner(state = battery)
+        }
     }
 }
 ```
@@ -165,15 +189,19 @@ Use `VoltaMock` to simulate hardware states in Compose Previews without physical
 
 ```kotlin
 import io.techie.volta.mock.VoltaMock
+import io.techie.volta.core.BatteryState
+import io.techie.volta.VoltaSensorState
 
 @Preview
 @Composable
 fun LowBatteryPreview() {
-    val mockProvider = VoltaMock()
-    mockProvider.setBatteryLevel(10)
-    mockProvider.setCharging(false)
-    mockProvider.setPowerSavingMode(true)
+    val mockVolta = VoltaMock()
+    mockVolta.setBatteryLevel(10)
+    mockVolta.setCharging(false)
+    mockVolta.setPowerSavingMode(true)
     
+    // Test the specific UI state explicitly:
+    val mockState = VoltaSensorState.Available(mockVolta.getBatteryState())
     // Provide to your UI component...
 }
 ```

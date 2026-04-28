@@ -56,9 +56,9 @@ jobs:
           :sample:desktopApp:assemble \
           --stacktrace -Pkotlin.daemon.jvmargs="-Xmx4g"
 
-  # Job 3: iOS Build (Slowest)
-  # Runs on macOS. Only builds iOS frameworks to verify compilation.
-  build-ios-targets:
+  # Job 3: iOS and macOS Build (Slowest)
+  # Runs on macOS. Builds iOS frameworks and tests macOS JVM implementation.
+  build-macos-ios-targets:
     needs: quality-check
     runs-on: macos-latest
     timeout-minutes: 45
@@ -71,10 +71,31 @@ jobs:
         distribution: 'temurin'
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
-    - name: Build iOS Frameworks (Debug)
+    - name: Build iOS Frameworks & Run macOS Tests
       # Using Debug variant is faster and uses less memory than Release
       run: |
         ./gradlew \
+          :library:jvmTest \
+          :library:iosSimulatorArm64Test \
           :library:linkDebugFrameworkIosSimulatorArm64 \
           :sample:shared:linkDebugFrameworkIosSimulatorArm64 \
           --stacktrace -Pkotlin.daemon.jvmargs="-Xmx6g"
+
+  # Job 4: Windows Build
+  # Runs on Windows. Tests Windows JVM implementation (WMIC/Powercfg).
+  build-windows-targets:
+    needs: quality-check
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+    - name: Build & Test (Windows JVM)
+      run: |
+        ./gradlew :library:jvmTest --stacktrace

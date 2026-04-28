@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 package io.techie.volta.compose
-import io.techie.volta.core.BatteryState
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import io.techie.volta.VoltaSensorState
+import io.techie.volta.core.BatteryState
 
 /**
  * Creates and remembers a [BatteryState] that updates automatically.
  *
- * @return A [State] object holding the current [BatteryState].
+ * @return A [State] object holding the current [VoltaSensorState].
  */
 @Composable
-expect fun rememberBatteryState(): State<BatteryState>
+expect fun rememberBatteryState(): State<VoltaSensorState<BatteryState>>

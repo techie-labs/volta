@@ -1,3 +1,18 @@
+/*
+ * Copyright 2026 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 @file:OptIn(ExperimentalWasmJsInterop::class)
 
 package io.techie.volta.provider
@@ -21,8 +36,10 @@ external interface BatteryManager : JsAny {
     val level: Double
     val chargingTime: Double
     val dischargingTime: Double
+
     @JsName("onchargingchange")
     var onChargingChange: ((JsAny?) -> JsAny?)?
+
     @JsName("onlevelchange")
     var onLevelChange: ((JsAny?) -> JsAny?)?
 }
@@ -81,7 +98,7 @@ class WasmBatteryStateProvider : BatteryStateProvider {
         try {
             val levelInt = (manager.level * 100).toInt()
             val isCharging = manager.charging
-            
+
             val newState = BatteryState(
                 level = levelInt,
                 isCharging = isCharging,
@@ -102,7 +119,7 @@ class WasmBatteryStateProvider : BatteryStateProvider {
                 cycleCount = Availability.NotSupported,
                 isPowerSavingMode = false,
                 isSafeMode = false,
-                isProtected = false
+                isProtected = false,
             )
 
             val previousState = _battery.value
@@ -135,6 +152,6 @@ class WasmBatteryStateProvider : BatteryStateProvider {
         cycleCount = Availability.Unknown,
         isPowerSavingMode = false,
         isSafeMode = false,
-        isProtected = false
+        isProtected = false,
     )
 }

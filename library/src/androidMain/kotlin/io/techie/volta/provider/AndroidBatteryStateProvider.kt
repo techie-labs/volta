@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 package io.techie.volta.provider
-import io.techie.volta.core.ChargingStatusChange
-import io.techie.volta.core.Availability
-import io.techie.volta.core.BatteryStateProvider
-import io.techie.volta.core.BatteryState
-
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -26,6 +21,10 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Build
 import android.os.PowerManager
+import io.techie.volta.core.Availability
+import io.techie.volta.core.BatteryState
+import io.techie.volta.core.BatteryStateProvider
+import io.techie.volta.core.ChargingStatusChange
 import io.techie.volta.enums.BatteryHealth
 import io.techie.volta.enums.ChargingSource
 import io.techie.volta.enums.ChargingStatus

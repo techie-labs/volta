@@ -27,6 +27,13 @@ Thank you for your interest in contributing to Volta! We welcome contributions f
 4.  Commit your changes. Please follow [Conventional Commits](https://www.conventionalcommits.org/).
 5.  Push your branch and open a **Pull Request**.
 
+## Architecture Guidelines
+
+Volta uses an **Interface-Driven** architecture to support dependency injection and mocking:
+*   **Do not expose implementation classes directly.** All platform-specific code (e.g., `AndroidBatteryStateProvider`) should be kept `internal`.
+*   **Use `VoltaSensorState` for hardware data.** Never emit raw `BatteryState` directly; always wrap it in `VoltaSensorState.Available`, `Error`, or `PermissionDenied` so UI can handle edge cases gracefully.
+*   **Factory Pattern:** The main entry point is `VoltaFactory.create()`. When adding a new target, ensure `expect object VoltaFactory` has a corresponding `actual` implementation.
+
 ## Code Style
 
 We use **Spotless** (with Ktlint) and **Detekt** to enforce code style and quality.

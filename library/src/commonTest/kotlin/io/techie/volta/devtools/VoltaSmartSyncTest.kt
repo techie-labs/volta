@@ -19,13 +19,13 @@ import io.techie.volta.core.Availability
 import io.techie.volta.core.BatteryState
 import io.techie.volta.core.BatteryStateProvider
 import io.techie.volta.core.ChargingStatusChange
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertFalse
@@ -48,19 +48,19 @@ class VoltaSmartSyncTest {
                 level = 15,
                 isCharging = false,
                 temperatureC = Availability.Available(45.0f),
-                isPowerSavingMode = true
-            )
+                isPowerSavingMode = true,
+            ),
         )
 
         val condition = ExecutionCondition(
             minBatteryLevel = 20,
             requiresCharging = true,
             maxTemperatureC = 40.0f,
-            ignorePowerSavingMode = false
+            ignorePowerSavingMode = false,
         )
 
         val flow = provider.observeSafeExecution(condition)
-        
+
         // Initial state does not meet conditions
         assertFalse(flow.first())
 
@@ -69,7 +69,7 @@ class VoltaSmartSyncTest {
             level = 25,
             isCharging = true,
             temperatureC = Availability.Available(35.0f),
-            isPowerSavingMode = false
+            isPowerSavingMode = false,
         )
 
         assertTrue(flow.first())
@@ -77,9 +77,8 @@ class VoltaSmartSyncTest {
 
     @Test
     fun testWhenOptimal() = runTest {
-        val provider = MockBatteryStateProvider(
-            BatteryState(level = 15) // Not optimal initially
-        )
+        // Not optimal initially
+        val provider = MockBatteryStateProvider(BatteryState(level = 15))
         val condition = ExecutionCondition(minBatteryLevel = 20)
 
         var executed = false
@@ -97,10 +96,10 @@ class VoltaSmartSyncTest {
 
         // Make optimal
         provider.mutableState.value = BatteryState(level = 25)
-        
+
         // Wait for it to process
         job.join()
-        
+
         assertTrue(executed)
     }
 }

@@ -1,65 +1,74 @@
+/*
+ * Copyright 2026 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.techie.volta.mock
 
+import io.techie.volta.Volta
+import io.techie.volta.VoltaSensorState
 import io.techie.volta.core.Availability
 import io.techie.volta.core.BatteryState
-import io.techie.volta.core.BatteryStateProvider
-import io.techie.volta.core.ChargingStatusChange
 import io.techie.volta.enums.ChargingStatus
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 /**
- * A mock implementation of [BatteryStateProvider] for Compose Previews and UI Testing.
+ * A mock implementation of [Volta] for Compose Previews and UI Testing.
  */
 class VoltaMock(
-    initialState: BatteryState = BatteryState(level = 100, isCharging = false)
-) : BatteryStateProvider {
+    initialState: VoltaSensorState<BatteryState> = VoltaSensorState.Available(BatteryState(level = 100, isCharging = false)),
+) : Volta {
 
-    private val _battery = MutableStateFlow(initialState)
-    private val _chargingEvents = MutableSharedFlow<ChargingStatusChange>(extraBufferCapacity = 1)
+    private val _batteryState = MutableStateFlow(initialState)
+    override val batteryState: StateFlow<VoltaSensorState<BatteryState>> = _batteryState.asStateFlow()
 
-    override val battery: StateFlow<BatteryState> = _battery.asStateFlow()
-    override val chargingEvents: Flow<ChargingStatusChange> = _chargingEvents
-
-    override fun observe() {
+    override fun startMonitoring() {
         // No-op for mock
     }
 
-    override fun stop() {
+    override fun stopMonitoring() {
         // No-op for mock
     }
 
     // --- Mock Controls ---
 
+    fun emitState(state: VoltaSensorState<BatteryState>) {
+        _batteryState.value = state
+    }
+
     fun setBatteryLevel(level: Int) {
-        _battery.value = _battery.value.copy(level = level.coerceIn(0, 100))
+        updateAvailableState { it.copy(level = level.coerceIn(0, 100)) }
     }
 
     fun setCharging(isCharging: Boolean) {
-        val wasCharging = _battery.value.isCharging
-        val fromStatus = _battery.value.chargingStatus
         val toStatus = if (isCharging) ChargingStatus.CHARGING else ChargingStatus.DISCHARGING
-
-        _battery.value = _battery.value.copy(
-            isCharging = isCharging,
-            chargingStatus = toStatus
-        )
-        
-        if (wasCharging != isCharging) {
-            _chargingEvents.tryEmit(ChargingStatusChange(from = fromStatus, to = toStatus))
-        }
+        updateAvailableState { it.copy(isCharging = isCharging, chargingStatus = toStatus) }
     }
 
     fun setThermalState(temperatureC: Float) {
-        _battery.value = _battery.value.copy(
-            temperatureC = Availability.Available(temperatureC)
-        )
+        updateAvailableState { it.copy(temperatureC = Availability.Available(temperatureC)) }
     }
 
     fun setPowerSavingMode(enabled: Boolean) {
-        _battery.value = _battery.value.copy(isPowerSavingMode = enabled)
+        updateAvailableState { it.copy(isPowerSavingMode = enabled) }
+    }
+
+    private inline fun updateAvailableState(update: (BatteryState) -> BatteryState) {
+        val current = _batteryState.value
+        if (current is VoltaSensorState.Available) {
+            _batteryState.value = VoltaSensorState.Available(update(current.data))
+        }
     }
 }

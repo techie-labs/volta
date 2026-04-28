@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.techie.volta.sample.utils
+package io.techie.volta
 
-import io.techie.volta.core.Availability
-
-fun <T> Availability<T>.toStringValue(transform: (T) -> String = { it.toString() }): String {
-    return when (this) {
-        is Availability.Available -> transform(value)
-        is Availability.NotSupported -> "N/A"
-        is Availability.Unknown -> "--"
-    }
+sealed interface VoltaSensorState<out T> {
+    data class Available<T>(val data: T) : VoltaSensorState<T>
+    data object PermissionDenied : VoltaSensorState<Nothing>
+    data object HardwareNotSupported : VoltaSensorState<Nothing>
+    data object Unknown : VoltaSensorState<Nothing>
+    data class Error(val throwable: Throwable) : VoltaSensorState<Nothing>
 }

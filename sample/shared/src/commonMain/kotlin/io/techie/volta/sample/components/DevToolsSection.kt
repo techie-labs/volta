@@ -1,3 +1,18 @@
+/*
+ * Copyright 2026 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.techie.volta.sample.components
 
 import androidx.compose.foundation.layout.*
@@ -31,7 +46,7 @@ private class MockBatteryStateProvider(initialState: BatteryState) : BatteryStat
     override val chargingEvents: Flow<ChargingStatusChange> = emptyFlow()
     override fun observe() {}
     override fun stop() {}
-    
+
     // Allow updating the mock state when the real state changes
     fun updateState(newState: BatteryState) {
         mutableState.value = newState
@@ -45,7 +60,7 @@ fun DevToolsSection(state: BatteryState) {
     // State for Profiler and Smart Sync
     val scope = rememberCoroutineScope()
     val mockProvider = remember { MockBatteryStateProvider(state) }
-    
+
     // Keep mock provider in sync with actual device state
     LaunchedEffect(state) {
         mockProvider.updateState(state)
@@ -54,7 +69,7 @@ fun DevToolsSection(state: BatteryState) {
     val profiler = remember { BatteryProfiler(mockProvider) }
     var profilerLog by remember { mutableStateOf("Profiler is ready.") }
     var isProfiling by remember { mutableStateOf(false) }
-    
+
     var syncLog by remember { mutableStateOf("Smart Sync is ready.") }
     var isSyncing by remember { mutableStateOf(false) }
 
@@ -86,7 +101,7 @@ fun DevToolsSection(state: BatteryState) {
                         dumpText = dump.entries.joinToString(separator = "\n") { "${it.key}: ${it.value}" }
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 ) {
                     Text("Generate Diagnostic Dump", color = MaterialTheme.colorScheme.onPrimary)
                 }
@@ -94,16 +109,16 @@ fun DevToolsSection(state: BatteryState) {
                     Surface(
                         color = MaterialTheme.colorScheme.surfaceVariant,
                         shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
                             text = dumpText!!,
                             modifier = Modifier.padding(12.dp),
                             style = TextStyle(
                                 fontFamily = FontFamily.Monospace,
-                                fontSize = TextUnit(12f, TextUnitType.Sp)
+                                fontSize = TextUnit(12f, TextUnitType.Sp),
                             ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
@@ -131,12 +146,12 @@ fun DevToolsSection(state: BatteryState) {
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-                
+
                 Text(
                     text = profilerLog,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
                 )
 
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -148,7 +163,7 @@ fun DevToolsSection(state: BatteryState) {
                         },
                         modifier = Modifier.weight(1f),
                         enabled = !isProfiling,
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     ) {
                         Text("Start Session", color = MaterialTheme.colorScheme.onPrimary)
                     }
@@ -165,7 +180,7 @@ fun DevToolsSection(state: BatteryState) {
                         },
                         modifier = Modifier.weight(1f),
                         enabled = isProfiling,
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
                     ) {
                         Text("Stop Session", color = MaterialTheme.colorScheme.onPrimary)
                     }
@@ -194,12 +209,12 @@ fun DevToolsSection(state: BatteryState) {
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-                
+
                 Text(
                     text = syncLog,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
                 )
 
                 Button(
@@ -209,7 +224,7 @@ fun DevToolsSection(state: BatteryState) {
                         scope.launch {
                             val condition = ExecutionCondition(
                                 minBatteryLevel = 20,
-                                ignorePowerSavingMode = false
+                                ignorePowerSavingMode = false,
                             )
                             mockProvider.whenOptimal(condition) {
                                 syncLog = "Conditions met! ✅\nExecuting heavy background task... Done!"
@@ -219,7 +234,7 @@ fun DevToolsSection(state: BatteryState) {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !isSyncing,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 ) {
                     Text("Execute Task Safely", color = MaterialTheme.colorScheme.onPrimary)
                 }

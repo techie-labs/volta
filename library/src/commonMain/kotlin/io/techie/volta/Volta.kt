@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.techie.volta.sample.utils
+package io.techie.volta
 
-import io.techie.volta.core.Availability
+import io.techie.volta.core.BatteryState
+import kotlinx.coroutines.flow.StateFlow
 
-fun <T> Availability<T>.toStringValue(transform: (T) -> String = { it.toString() }): String {
-    return when (this) {
-        is Availability.Available -> transform(value)
-        is Availability.NotSupported -> "N/A"
-        is Availability.Unknown -> "--"
-    }
+/**
+ * The main entry point for the Volta hardware monitoring library.
+ */
+interface Volta {
+    val batteryState: StateFlow<VoltaSensorState<BatteryState>>
+
+    fun startMonitoring()
+    fun stopMonitoring()
 }
