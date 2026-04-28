@@ -1,0 +1,14 @@
+public final class io/techie/volta/mock/VoltaMock : io/techie/volta/Volta {
+	public fun <init> ()V
+	public fun <init> (Lio/techie/volta/VoltaSensorState;)V
+	public synthetic fun <init> (Lio/techie/volta/VoltaSensorState;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun emitState (Lio/techie/volta/VoltaSensorState;)V
+	public fun getBatteryState ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun setBatteryLevel (I)V
+	public final fun setCharging (Z)V
+	public final fun setPowerSavingMode (Z)V
+	public final fun setThermalState (F)V
+	public fun startMonitoring ()V
+	public fun stopMonitoring ()V
+}
+
