@@ -1,3 +1,67 @@
+public abstract interface class io/techie/volta/Volta {
+	public abstract fun getBatteryState ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun startMonitoring ()V
+	public abstract fun stopMonitoring ()V
+}
+
+public final class io/techie/volta/VoltaFactory {
+	public static final field $stable I
+	public static final field INSTANCE Lio/techie/volta/VoltaFactory;
+	public final fun create (Lkotlinx/coroutines/CoroutineDispatcher;)Lio/techie/volta/Volta;
+	public static synthetic fun create$default (Lio/techie/volta/VoltaFactory;Lkotlinx/coroutines/CoroutineDispatcher;ILjava/lang/Object;)Lio/techie/volta/Volta;
+}
+
+public abstract interface class io/techie/volta/VoltaSensorState {
+}
+
+public final class io/techie/volta/VoltaSensorState$Available : io/techie/volta/VoltaSensorState {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lio/techie/volta/VoltaSensorState$Available;
+	public static synthetic fun copy$default (Lio/techie/volta/VoltaSensorState$Available;Ljava/lang/Object;ILjava/lang/Object;)Lio/techie/volta/VoltaSensorState$Available;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getData ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/techie/volta/VoltaSensorState$Error : io/techie/volta/VoltaSensorState {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Throwable;)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/Throwable;)Lio/techie/volta/VoltaSensorState$Error;
+	public static synthetic fun copy$default (Lio/techie/volta/VoltaSensorState$Error;Ljava/lang/Throwable;ILjava/lang/Object;)Lio/techie/volta/VoltaSensorState$Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getThrowable ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/techie/volta/VoltaSensorState$HardwareNotSupported : io/techie/volta/VoltaSensorState {
+	public static final field $stable I
+	public static final field INSTANCE Lio/techie/volta/VoltaSensorState$HardwareNotSupported;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/techie/volta/VoltaSensorState$PermissionDenied : io/techie/volta/VoltaSensorState {
+	public static final field $stable I
+	public static final field INSTANCE Lio/techie/volta/VoltaSensorState$PermissionDenied;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/techie/volta/VoltaSensorState$Unknown : io/techie/volta/VoltaSensorState {
+	public static final field $stable I
+	public static final field INSTANCE Lio/techie/volta/VoltaSensorState$Unknown;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class io/techie/volta/compose/RememberBatteryState_desktopKt {
 	public static final fun rememberBatteryState (Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
 }
