@@ -32,13 +32,13 @@ Add Volta to your `commonMain` dependencies in your `build.gradle.kts` file:
 ```kotlin
 commonMain.dependencies {
     // Core hardware logic (Required)
-    implementation("io.github.techie-labs:volta:1.0.0-beta02")
+    implementation("io.github.techie-labs:volta:1.0.0-rc01")
     
     // Optional: Ready-to-use Compose Widgets
-    implementation("io.github.techie-labs:volta-ui-compose:1.0.0-beta02")
+    implementation("io.github.techie-labs:volta-ui-compose:1.0.0-rc01")
     
     // Optional: Mock provider for Previews and Unit Tests
-    implementation("io.github.techie-labs:volta-mock:1.0.0-beta02")
+    implementation("io.github.techie-labs:volta-mock:1.0.0-rc01")
 }
 ```
 

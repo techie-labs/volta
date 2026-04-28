@@ -22,6 +22,26 @@ mavenPublishing {
         description.set("Compose Multiplatform UI widgets for the Volta library.")
         inceptionYear.set("2024")
         url.set("https://github.com/fanggadewangga/volta")
+
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                distribution.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+        developers {
+            developer {
+                id.set("fanggadewangga")
+                name.set("Fangga Dewangga")
+                url.set("https://github.com/fanggadewangga")
+            }
+        }
+        scm {
+            url.set("https://github.com/fanggadewangga/volta")
+            connection.set("scm:git:git://github.com/fanggadewangga/volta.git")
+            developerConnection.set("scm:git:ssh://git@github.com/fanggadewangga/volta.git")
+        }
     }
 }
 
