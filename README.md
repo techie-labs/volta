@@ -78,6 +78,58 @@ class BatteryViewModel(private val batteryProvider: BatteryStateProvider) {
 }
 ```
 
+## 🛠️ Developer Tools
+
+Volta includes advanced tools to help you build battery-efficient apps.
+
+### 1. Smart Sync (Execution Engine)
+Safely execute heavy background tasks (like syncing or AI processing) only when hardware conditions are optimal.
+
+```kotlin
+import io.techie.volta.devtools.*
+
+val condition = ExecutionCondition(
+    minBatteryLevel = 20,
+    requiresCharging = true,
+    maxTemperatureC = 40.0f
+)
+
+// Suspend your coroutine until conditions are met
+batteryProvider.whenOptimal(condition) {
+    // Run your heavy ML model or sync job here
+    syncData()
+}
+```
+
+### 2. Battery Profiler
+Track battery consumption for specific user sessions or tasks.
+
+```kotlin
+import io.techie.volta.devtools.BatteryProfiler
+
+val profiler = BatteryProfiler(batteryProvider)
+
+// Start tracking before a heavy operation
+profiler.startSession("VideoProcessing")
+
+// ... do heavy work ...
+
+// Stop tracking and get a comprehensive report
+val report = profiler.stopSession("VideoProcessing")
+val drop = (report?.startBatteryPercent ?: 0) - (report?.endBatteryPercent ?: 0)
+println("Battery dropped by $drop% during video processing.")
+```
+
+### 3. Diagnostic Dump
+Get an instant, flat map of all battery states for crash reporting or logging.
+
+```kotlin
+import io.techie.volta.diagnostics.getDiagnosticDump
+
+val dump = batteryState.getDiagnosticDump()
+// Example: crashlytics.setCustomKeys(dump)
+```
+
 ## 📱 Platform Support & Permissions
 
 ### 🤖 Android
