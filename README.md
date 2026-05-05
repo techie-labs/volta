@@ -42,11 +42,42 @@ commonMain.dependencies {
 }
 ```
 
+## ⚙️ Platform Setup
+
+Before using Volta, ensure your platform is correctly configured.
+
+### 🤖 Android
+No special permissions are required for basic battery level and status monitoring. However, you must initialize the library.
+
+#### 1. Initialization (Required for non-Compose)
+If you are using Volta in your business logic (ViewModels/Repositories), initialize it in your `Application` class or `MainActivity`:
+
+```kotlin
+class MyApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        VoltaFactory.initialize(this)
+    }
+}
+```
+
+> [!TIP]
+> If you only use `rememberBatteryState()` from `volta-ui-compose`, initialization is handled **automatically** for you!
+
+#### 2. Permissions (Optional)
+Add this to your `AndroidManifest.xml` if you want to access advanced diagnostics on some devices (though most features work without it):
+
+```xml
+<uses-permission android:name="android.permission.BATTERY_STATS" />
+```
+
+### 🍎 iOS / 🖥️ Desktop / 🌐 Web
+No setup, permissions, or initialization required. It works out of the box! 🚀
+
 ## 🚀 Quick Start
 
 ### 1. Using with Compose Multiplatform
-
-Get reactive battery updates in your UI with just one line of code:
+The easiest way to get started. No manual initialization required on any platform.
 
 ```kotlin
 import androidx.compose.runtime.getValue
@@ -210,7 +241,8 @@ fun LowBatteryPreview() {
 
 ### 🤖 Android
 *   **Min SDK**: 24 (Android 7.0)
-*   **Permissions**: Add `<uses-permission android:name="android.permission.BATTERY_STATS" />` for full diagnostics.
+*   **Initialization**: Required via `VoltaFactory.initialize(context)` for non-compose usage.
+*   **Permissions**: None required for basic info. `BATTERY_STATS` is optional for advanced diagnostics.
 *   **Note**: Cycle Count requires Android 14+.
 
 ### 🍎 iOS
