@@ -42,7 +42,7 @@ No platform-specific setup for consumers. Just battery data.
 Volta is built to support both pure Kotlin Multiplatform (KMP) projects and modern Compose Multiplatform UI architectures. It offers lightweight, native performance without forcing a UI framework on your business logic.
 
 ### Kotlin Multiplatform Battery Status & Diagnostics
-*   **Unified API**: One interface to monitor battery status across **Android**, **iOS** (Arm64), **Desktop** (JVM), and **Web** (Wasm).
+*   **Unified API**: One interface to monitor battery status across **Android**, **iOS** (Arm64), **Desktop** (JVM), and **Web** (WasmJs).
 *   **Reactive State**: Built on Kotlin `StateFlow` for seamless, real-time integration with your applications.
 *   **Deep Diagnostics**: Access advanced data like Cycle Count, Current (mA), Voltage, Temperature, and Battery Technology.
 *   **Smart Detection**: Automatically detect Power Saving Mode, Safe Mode, and Protected Battery limits.
