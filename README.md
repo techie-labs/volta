@@ -14,7 +14,7 @@
 
 ## Introduction
 
-Volta is a powerful **compose multiplatform battery library** and **Kotlin Multiplatform (KMP)** solution designed to simplify hardware monitoring across all major platforms. Whether you need to access battery data in your core business logic (via pure KMP) or build reactive user interfaces (via Compose Multiplatform), Volta provides the right tools. It provides a unified, reactive API to easily access real-time battery health, charging status, and advanced diagnostics across **Android**, **iOS (Arm64 & Apple Silicon)**, **Desktop (JVM)**, and **Web (WasmJs)**.
+Volta is a powerful **compose multiplatform battery library** and **Kotlin Multiplatform (KMP)** solution designed to simplify hardware monitoring across all major platforms. Whether you need to access battery data in your core business logic (via pure KMP) or build reactive user interfaces (via Compose Multiplatform), Volta provides the right tools. It provides a unified, reactive API to easily access real-time battery health, charging status, and advanced diagnostics across **Android**, **iOS (arm64 device + arm64 simulator)**, **Desktop (JVM)**, and **Web (WasmJs)**.
 
 ## Why Volta?
 
