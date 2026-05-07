@@ -34,7 +34,7 @@ Building cross-platform apps with **Kotlin Multiplatform** is powerful — until
 val sensorState by rememberBatteryState()
 ```
 
-No `expect`/`actual` declarations. No platform modules. Just battery data.
+No platform-specific setup for consumers. Just battery data.
 
 ## Features
 
