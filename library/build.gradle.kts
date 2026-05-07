@@ -27,8 +27,8 @@ mavenPublishing {
     pom {
         name.set("Volta")
         description.set(
-            "Volta ⚡ — Kotlin Multiplatform Battery Library. " +
-                "Monitor battery health, charging status, and advanced diagnostics across Android, iOS, and Desktop with unified API.",
+            "Volta ⚡ — Compose Multiplatform Battery Library & Kotlin Multiplatform (KMP) solution. " +
+                "Monitor battery health, charging status, and advanced diagnostics across Android, iOS, Desktop, and Web with a unified API.",
         )
         inceptionYear.set("2024")
         url.set("https://github.com/fanggadewangga/volta")
