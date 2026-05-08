@@ -42,3 +42,6 @@ captures/
 
 # Secret files (just in case)
 secrets.properties
+
+# Release notes (used for GitHub Releases only)
+RELEASE_NOTES*.md
