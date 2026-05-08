@@ -21,7 +21,7 @@ mavenPublishing {
         name.set("Volta UI Compose")
         description.set("Compose Multiplatform UI widgets for the Volta library.")
         inceptionYear.set("2024")
-        url.set("https://github.com/fanggadewangga/volta")
+        url.set("https://github.com/techie-labs/volta")
 
         licenses {
             license {
@@ -38,9 +38,9 @@ mavenPublishing {
             }
         }
         scm {
-            url.set("https://github.com/fanggadewangga/volta")
-            connection.set("scm:git:git://github.com/fanggadewangga/volta.git")
-            developerConnection.set("scm:git:ssh://git@github.com/fanggadewangga/volta.git")
+            url.set("https://github.com/techie-labs/volta")
+            connection.set("scm:git:git://github.com/techie-labs/volta.git")
+            developerConnection.set("scm:git:ssh://git@github.com/techie-labs/volta.git")
         }
     }
 }
