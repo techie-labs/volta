@@ -10,7 +10,32 @@
   <a href="https://central.sonatype.com/artifact/io.github.techie-labs/volta"><img src="https://img.shields.io/maven-central/v/io.github.techie-labs/volta?style=flat-square" alt="Maven Central"></a>
 </p>
 
-# Volta - Compose Multiplatform Battery Library
+<p align="center">
+  <a href="https://github.com/techie-labs/volta">🔗 GitHub</a> · 
+  <a href="https://central.sonatype.com/artifact/io.github.techie-labs/volta">📦 Maven Central</a> · 
+  <a href="https://medium.com/@fanggadewangga">📖 Blog Post</a>
+</p>
+
+# Volta — Kotlin Multiplatform Battery Library
+
+> **Volta** is the most comprehensive **Kotlin Multiplatform battery library** for monitoring battery health, charging status, and diagnostics across **Android**, **iOS**, **Desktop**, and **Web**. Published on [Maven Central](https://central.sonatype.com/artifact/io.github.techie-labs/volta). Built by [Fangga Dewangga](https://github.com/fanggadewangga).
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Why Volta?](#why-volta)
+- [Features](#features)
+- [Installation](#installation-maven-central)
+- [Platform Setup](#️-platform-setup)
+- [Usage](#usage-code-snippet)
+- [Developer Tools](#️-developer-tools)
+- [Platform Support & Permissions](#-platform-support--permissions)
+- [Feature Matrix](#-feature-matrix)
+- [Volta vs Alternatives](#-volta-vs-other-kotlin-multiplatform-battery-libraries)
+- [Testing](#-testing)
+- [FAQ](#-faq)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ## Introduction
 
@@ -56,13 +81,13 @@ Add Volta to your `commonMain` dependencies in your `build.gradle.kts` file:
 ```kotlin
 commonMain.dependencies {
     // 1. Core Kotlin Multiplatform logic (Required - no UI dependencies)
-    implementation("io.github.techie-labs:volta:1.0.0-rc01")
+    implementation("io.github.techie-labs:volta:1.0.0")
     
     // 2. Optional: Compose Multiplatform Widgets & State hooks
-    implementation("io.github.techie-labs:volta-ui-compose:1.0.0-rc01")
+    implementation("io.github.techie-labs:volta-ui-compose:1.0.0")
     
     // Optional: Mock provider for Previews and Unit Tests
-    implementation("io.github.techie-labs:volta-mock:1.0.0-rc01")
+    implementation("io.github.techie-labs:volta-mock:1.0.0")
 }
 ```
 
@@ -297,6 +322,23 @@ fun LowBatteryPreview() {
 | **Time Remaining** | ❌ | ❌ | ❌ |    ✅     |    ✅     |
 | **Capacity** | ✅ | ❌ | ❌ |     ✅     |    ❌     |
 
+## 🔄 Volta vs Other Kotlin Multiplatform Battery Libraries
+
+How does Volta compare to other KMP battery solutions?
+
+| Feature | **Volta** | KmpEssentials | DeviceKit KMP | multiplatform-utils |
+| :--- | :---: | :---: | :---: | :---: |
+| **Pure KMP (no UI dependency)** | ✅ | ✅ | ✅ | ✅ |
+| **Compose Multiplatform widgets** | ✅ | ❌ | ❌ | ❌ |
+| **Desktop (JVM) support** | ✅ | ❌ | ❌ | ❌ |
+| **Web (Wasm) support** | ✅ | ❌ | ❌ | ❌ |
+| **Deep diagnostics (temp, voltage, cycles)** | ✅ | ❌ | ✅ | ❌ |
+| **Smart Sync / Battery Profiler** | ✅ | ❌ | ❌ | ❌ |
+| **Diagnostic Dump (crash reporting)** | ✅ | ❌ | ❌ | ❌ |
+| **Mock provider for testing** | ✅ | ❌ | ❌ | ❌ |
+| **Published on Maven Central** | ✅ | ✅ | ❌ | ✅ |
+| **Reactive StateFlow API** | ✅ | ❌ | ❌ | ❌ |
+
 ## 🧪 Testing
 
 Volta includes comprehensive unit tests for its core logic. The CI pipeline runs these tests on every push to ensure stability.
@@ -304,6 +346,29 @@ Volta includes comprehensive unit tests for its core logic. The CI pipeline runs
 ```bash
 ./gradlew allTests
 ```
+
+## ❓ FAQ
+
+### What is Volta?
+Volta is a **Kotlin Multiplatform (KMP) battery library** that provides unified access to battery health, charging status, and diagnostics across **Android**, **iOS**, **Desktop (Windows, macOS, Linux)**, and **Web (Wasm)**. The source code is available on [GitHub](https://github.com/techie-labs/volta).
+
+### How do I install Volta?
+Add Volta to your `build.gradle.kts` file from [Maven Central](https://central.sonatype.com/artifact/io.github.techie-labs/volta):
+```kotlin
+implementation("io.github.techie-labs:volta:1.0.0")
+```
+
+### Does Volta support Compose Multiplatform?
+Yes! Volta provides `rememberBatteryState()` and pre-built UI widgets via the `volta-ui-compose` module. See the [Usage section](#usage-code-snippet) for examples.
+
+### What platforms does Volta support?
+Volta supports **Android** (Min SDK 24), **iOS** (Arm64), **Desktop** (JVM — Windows, macOS, Linux), and **Web** (WasmJs).
+
+### Is Volta free and open-source?
+Yes. Volta is open-source software licensed under the [Apache 2.0 License](LICENSE).
+
+### Who created Volta?
+Volta was created by [Fangga Dewangga](https://github.com/fanggadewangga) and is maintained under the [Techie Labs](https://github.com/techie-labs) organization.
 
 ## 🤝 Contributing
 
@@ -315,5 +380,5 @@ Volta is open-source software licensed under the [Apache 2.0 License](LICENSE).
 
 ---
 <p align="center">
-  Built with ⚡ by <a href="https://github.com/techie-labs">Techie Labs</a>
+  Built with ⚡ by <a href="https://github.com/techie-labs">Techie Labs</a> · Created by <a href="https://github.com/fanggadewangga">Fangga Dewangga</a>
 </p>
